@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+package api.v1;
+import "google/api/annotations.proto";
+
+option go_package = "users/api/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.v1";
+
+service Users {
+	rpc CreateUsers (CreateUsersRequest) returns (CreateUsersReply) {
+		option (google.api.http) = {
+			post: "/users"
+			body: "*"
+		};
+	};
+	rpc UpdateUsers (UpdateUsersRequest) returns (UpdateUsersReply){
+		option (google.api.http) = {
+			patch: "/users"
+			body: "*"
+		};
+	};
+	rpc DeleteUsers (DeleteUsersRequest) returns (DeleteUsersReply){
+		option (google.api.http) = {
+			delete: "/users"
+		};
+	};
+	rpc GetUsers (GetUsersRequest) returns (GetUsersReply){
+		option (google.api.http) = {
+			get: "/users"
+		};
+	};
+	rpc ListUsers (ListUsersRequest) returns (ListUsersReply);
+}
+
+message CreateUsersRequest {
+  string account = 1;
+	string phone = 2;
+	string name = 3;
+	string password = 4;
+	int32 age = 5;
+	int32 sex = 6;
+	string email = 7;
+	string school = 8;
+}
+
+message CreateUsersReply {
+  bool success = 1;
+	string msg = 2;
+}
+
+message UpdateUsersRequest {}
+message UpdateUsersReply {}
+
+message DeleteUsersRequest {
+	string uuid = 1;
+}
+message DeleteUsersReply {
+	bool success = 1;
+	string msg = 2;
+}
+
+message GetUsersRequest {}
+
+message GetUsersReply {
+	bool success = 1;
+	string msg = 2;
+	message data {
+		string name = 1;
+		int32 age = 2;
+		string phone = 3;
+		int32 sex = 4;
+		string account = 5;
+		string email = 6;
+		string address = 7;
+		string avatar = 8;
+		int32 status = 9;
+		string uuid = 10;
+		string school = 11;
+	}
+}
+
+message PatchUsersRequest {
+	 string name = 1;
+	 int32 age = 2;
+	 string address =3;
+	 string email = 4;
+	 string avatar = 5;
+	 string school = 6;
+	 string phone = 7;
+	 int32 sex = 8;
+	 string uuid = 9;
+}
+
+message PatchUsersReply {
+	bool success = 1;
+	string msg = 2;
+	message data {
+		string name = 1;
+		int32 age = 2;
+		string phone = 3;
+		int32 sex = 4;
+		string account = 5;
+		string email = 6;
+		string address = 7;
+		string avatar = 8;
+		int32 status = 9;
+		string uuid = 10;
+		string school = 11;
+	}
+}
+
+message ListUsersRequest {
+
+}
+message ListUsersReply {}
