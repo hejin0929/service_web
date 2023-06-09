@@ -33,10 +33,10 @@ type UsersHTTPServer interface {
 
 func RegisterUsersHTTPServer(s *http.Server, srv UsersHTTPServer) {
 	r := s.Route("/")
-	r.POST("/users", _Users_CreateUsers0_HTTP_Handler(srv))
-	r.PATCH("/users", _Users_UpdateUsers0_HTTP_Handler(srv))
-	r.DELETE("/users", _Users_DeleteUsers0_HTTP_Handler(srv))
-	r.GET("/users", _Users_GetUsers0_HTTP_Handler(srv))
+	r.POST("/api/v1/users", _Users_CreateUsers0_HTTP_Handler(srv))
+	r.PATCH("/api/v1/users", _Users_UpdateUsers0_HTTP_Handler(srv))
+	r.DELETE("/api/v1/users", _Users_DeleteUsers0_HTTP_Handler(srv))
+	r.GET("/api/v1/users", _Users_GetUsers0_HTTP_Handler(srv))
 }
 
 func _Users_CreateUsers0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Context) error {
@@ -132,7 +132,7 @@ func NewUsersHTTPClient(client *http.Client) UsersHTTPClient {
 
 func (c *UsersHTTPClientImpl) CreateUsers(ctx context.Context, in *CreateUsersRequest, opts ...http.CallOption) (*CreateUsersReply, error) {
 	var out CreateUsersReply
-	pattern := "/users"
+	pattern := "/api/v1/users"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationUsersCreateUsers))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -145,7 +145,7 @@ func (c *UsersHTTPClientImpl) CreateUsers(ctx context.Context, in *CreateUsersRe
 
 func (c *UsersHTTPClientImpl) DeleteUsers(ctx context.Context, in *DeleteUsersRequest, opts ...http.CallOption) (*DeleteUsersReply, error) {
 	var out DeleteUsersReply
-	pattern := "/users"
+	pattern := "/api/v1/users"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationUsersDeleteUsers))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -158,7 +158,7 @@ func (c *UsersHTTPClientImpl) DeleteUsers(ctx context.Context, in *DeleteUsersRe
 
 func (c *UsersHTTPClientImpl) GetUsers(ctx context.Context, in *GetUsersRequest, opts ...http.CallOption) (*GetUsersReply, error) {
 	var out GetUsersReply
-	pattern := "/users"
+	pattern := "/api/v1/users"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationUsersGetUsers))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -171,7 +171,7 @@ func (c *UsersHTTPClientImpl) GetUsers(ctx context.Context, in *GetUsersRequest,
 
 func (c *UsersHTTPClientImpl) UpdateUsers(ctx context.Context, in *UpdateUsersRequest, opts ...http.CallOption) (*UpdateUsersReply, error) {
 	var out UpdateUsersReply
-	pattern := "/users"
+	pattern := "/api/v1/users"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationUsersUpdateUsers))
 	opts = append(opts, http.PathTemplate(pattern))

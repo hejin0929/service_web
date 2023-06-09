@@ -10,24 +10,24 @@ option java_package = "api.v1";
 service Users {
 	rpc CreateUsers (CreateUsersRequest) returns (CreateUsersReply) {
 		option (google.api.http) = {
-			post: "/users"
+			post: "/api/v1/users"
 			body: "*"
 		};
 	};
 	rpc UpdateUsers (UpdateUsersRequest) returns (UpdateUsersReply){
 		option (google.api.http) = {
-			patch: "/users"
+			patch: "/api/v1/users"
 			body: "*"
 		};
 	};
 	rpc DeleteUsers (DeleteUsersRequest) returns (DeleteUsersReply){
 		option (google.api.http) = {
-			delete: "/users"
+			delete: "/api/v1/users"
 		};
 	};
 	rpc GetUsers (GetUsersRequest) returns (GetUsersReply){
 		option (google.api.http) = {
-			get: "/users"
+			get: "/api/v1/users"
 		};
 	};
 	rpc ListUsers (ListUsersRequest) returns (ListUsersReply);

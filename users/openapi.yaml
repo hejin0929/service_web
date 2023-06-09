@@ -6,7 +6,7 @@ info:
     title: Users API
     version: 0.0.1
 paths:
-    /users:
+    /api/v1/users:
         get:
             tags:
                 - Users
