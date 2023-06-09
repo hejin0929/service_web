@@ -14,8 +14,12 @@ service Template {
 	rpc ListTemplate (ListTemplateRequest) returns (ListTemplateReply);
 }
 
-message CreateTemplateRequest {}
-message CreateTemplateReply {}
+message CreateTemplateRequest {
+
+}
+message CreateTemplateReply {
+
+}
 
 message UpdateTemplateRequest {}
 message UpdateTemplateReply {}
