@@ -117,10 +117,12 @@ components:
                     format: int32
                 sex:
                     type: integer
-                    format: int32
+                    format: enum
                 email:
                     type: string
                 school:
+                    type: string
+                address:
                     type: string
         DeleteUsersReply:
             type: object

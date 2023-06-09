@@ -5,30 +5,30 @@ import (
 	"users/internal/biz"
 )
 
-type usersRepo struct {
+type UsersRepo struct {
 	data *Data
 	log  *log.Helper
 }
 
-func NewUsersRepo(data *Data, logger log.Logger) biz.GreeterRepo {
-	return &greeterRepo{
+func NewUsersRepo(data *Data, logger log.Logger) *UsersRepo {
+	return &UsersRepo{
 		data: data,
 		log:  log.NewHelper(logger),
 	}
 }
 
-func (r *usersRepo) createUser() (err error) {
+func (r *UsersRepo) CreateUser(usersType *biz.CreateUsersType) (err error) {
 	return
 }
 
-func (r *usersRepo) getUser() (user Users, err error) {
-	return
-}
-
-func (r *usersRepo) patchUser() (user Users, err error) {
-	return
-}
-
-func (r *usersRepo) deleteUser() (err error) {
-	return
-}
+//func (r *UsersRepo) getUser() (user Users, err error) {
+//	return
+//}
+//
+//func (r *UsersRepo) patchUser() (user Users, err error) {
+//	return
+//}
+//
+//func (r *UsersRepo) deleteUser() (err error) {
+//	return
+//}
