@@ -2,20 +2,24 @@ package service
 
 import (
 	"context"
+	"users/internal/biz"
 
 	pb "users/api/v1"
 )
 
 type UsersService struct {
 	pb.UnimplementedUsersServer
+	coll *biz.UsersUse
 }
 
-func NewUsersService() *UsersService {
-	return &UsersService{}
+func NewUsersService(coll *biz.UsersUse) *UsersService {
+	return &UsersService{
+		coll: coll,
+	}
 }
 
 func (s *UsersService) CreateUsers(ctx context.Context, req *pb.CreateUsersRequest) (*pb.CreateUsersReply, error) {
-	return &pb.CreateUsersReply{}, nil
+	return s.coll.CreateUsers(ctx, req)
 }
 func (s *UsersService) UpdateUsers(ctx context.Context, req *pb.UpdateUsersRequest) (*pb.UpdateUsersReply, error) {
 	return &pb.UpdateUsersReply{}, nil

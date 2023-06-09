@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package api.v1;
 import "google/api/annotations.proto";
+import "validate/validate.proto";
 
 option go_package = "users/api/v1;v1";
 option java_multiple_files = true;
@@ -10,43 +11,50 @@ option java_package = "api.v1";
 service Users {
 	rpc CreateUsers (CreateUsersRequest) returns (CreateUsersReply) {
 		option (google.api.http) = {
-			post: "/users"
+			post: "/api/v1/users"
 			body: "*"
 		};
 	};
 	rpc UpdateUsers (UpdateUsersRequest) returns (UpdateUsersReply){
 		option (google.api.http) = {
-			patch: "/users"
+			patch: "/api/v1/users"
 			body: "*"
 		};
 	};
 	rpc DeleteUsers (DeleteUsersRequest) returns (DeleteUsersReply){
 		option (google.api.http) = {
-			delete: "/users"
+			delete: "/api/v1/users"
 		};
 	};
 	rpc GetUsers (GetUsersRequest) returns (GetUsersReply){
 		option (google.api.http) = {
-			get: "/users"
+			get: "/api/v1/users"
 		};
 	};
 	rpc ListUsers (ListUsersRequest) returns (ListUsersReply);
 }
 
 message CreateUsersRequest {
-  string account = 1;
-	string phone = 2;
-	string name = 3;
-	string password = 4;
-	int32 age = 5;
-	int32 sex = 6;
-	string email = 7;
+	enum SexEnum {
+		SEX_NOT_VALUE = 0; // 未知
+		SEX_MEN_VALUE = 1; // 男
+		SEX_WOMEN_VALUE = 2; // 女
+	}
+
+	string account = 1 [(validate.rules).string = {min_len: 1, max_len: 20}];
+	string phone = 2 [(validate.rules).string.pattern = "^1[345789]{1}\\d{9}$"];
+	string name = 3 [(validate.rules).string = {min_len: 1, max_len: 20}];
+	string password = 4 [(validate.rules).string.len = 32];
+	int32 age = 5 [(validate.rules).int32 = { gt: 0, lte: 999 }];
+	SexEnum sex = 6 [(validate.rules).enum = {in: [0,1,2]}];
+	string email = 7 [(validate.rules).string.email = true];
 	string school = 8;
+	string address = 9;
 }
 
 message CreateUsersReply {
-  bool success = 1;
-	string msg = 2;
+  bool success = 1; // 返回是否成功
+	string message = 2; // 返回信息
 }
 
 message UpdateUsersRequest {}
@@ -60,11 +68,13 @@ message DeleteUsersReply {
 	string msg = 2;
 }
 
-message GetUsersRequest {}
+message GetUsersRequest {
+	string uuid = 1 [(validate.rules).string.min_len = 1] ;
+}
 
 message GetUsersReply {
 	bool success = 1;
-	string msg = 2;
+	string message = 2;
 	message data {
 		string name = 1;
 		int32 age = 2;

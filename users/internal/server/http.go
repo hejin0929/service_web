@@ -1,7 +1,9 @@
 package server
 
 import (
-	v1 "users/api/helloworld/v1"
+	"github.com/go-kratos/kratos/v2/middleware/validate"
+	"os"
+	v1 "users/api/v1"
 	"users/internal/conf"
 	"users/internal/service"
 
@@ -11,10 +13,11 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, greeter *service.UsersService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
+			validate.Validator(),
 		),
 	}
 	if c.Http.Network != "" {
@@ -27,6 +30,20 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterGreeterHTTPServer(srv, greeter)
+
+	srv.Route("/doc").GET("/doc.json", func(c http.Context) error {
+		dir, _ := os.Getwd()
+
+		file, err := os.ReadFile(dir + "/doc.json")
+
+		if err != nil {
+			c.JSON(404, err)
+		}
+		c.Response().Write(file)
+
+		return err
+	})
+
+	v1.RegisterUsersHTTPServer(srv, greeter)
 	return srv
 }
