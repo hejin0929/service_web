@@ -14,12 +14,14 @@ import (
 
 // NewHTTPServer new an HTTP server.
 func NewHTTPServer(c *conf.Server, greeter *service.UsersService, logger log.Logger) *http.Server {
-	var opts = []http.ServerOption{
-		http.Middleware(
-			recovery.Recovery(),
-			validate.Validator(),
-		),
-	}
+	var (
+		opts = []http.ServerOption{
+			http.Middleware(
+				recovery.Recovery(),
+				validate.Validator(),
+			),
+		}
+	)
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))
 	}
