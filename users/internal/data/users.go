@@ -38,8 +38,9 @@ func (r *UsersRepo) CreateUser(ctx context.Context, usersType *biz.Users) (err e
 	return
 }
 
-func (r *UsersRepo) getUser() (user *biz.Users, err error) {
-
+func (r *UsersRepo) GetUser(ctx context.Context, name string, value interface{}) (user *biz.Users, err error) {
+	user = new(biz.Users)
+	r.data.Mysql.Model(biz.UsersUse{}).Where(name+" = ?", value).Find(&user).WithContext(ctx)
 	return
 }
 

@@ -29,9 +29,6 @@ func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
-	if err != nil {
-		return nil, nil, err
-	}
 	userRepo := data.NewUsersRepo(dataData, logger)
 	userUsecase := biz.NewUsersUse(userRepo, logger)
 	userService := service.NewUsersService(userUsecase)

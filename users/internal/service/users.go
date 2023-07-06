@@ -28,7 +28,7 @@ func (s *UsersService) DeleteUsers(ctx context.Context, req *pb.DeleteUsersReque
 	return &pb.DeleteUsersReply{}, nil
 }
 func (s *UsersService) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (*pb.GetUsersReply, error) {
-	return &pb.GetUsersReply{}, nil
+	return s.biz.GetUsers(ctx, req)
 }
 func (s *UsersService) ListUsers(ctx context.Context, req *pb.ListUsersRequest) (*pb.ListUsersReply, error) {
 	return &pb.ListUsersReply{}, nil

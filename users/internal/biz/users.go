@@ -40,6 +40,7 @@ type Users struct {
 // UsersRepo is a user repo.
 type UsersRepo interface {
 	CreateUser(ctx context.Context, usersType *Users) error
+	GetUser(ctx context.Context, name string, value interface{}) (*Users, error)
 }
 
 type UsersUse struct {
@@ -74,5 +75,21 @@ func (r *UsersUse) CreateUsers(ctx context.Context, req *pb.CreateUsersRequest) 
 	}
 	res.Message = "添加成功"
 	res.Success = true
+	return
+}
+
+func (r *UsersUse) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (res *pb.GetUsersReply, err error) {
+
+	user, err := r.repo.GetUser(ctx, "uid", req.Uuid)
+
+	res = new(pb.GetUsersReply)
+
+	if user.ID == 0 {
+		res.Success = false
+		res.Message = "获取用户信息失败"
+
+		return
+	}
+
 	return
 }
