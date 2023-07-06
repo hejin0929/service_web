@@ -31,7 +31,41 @@ service Users {
 			get: "/api/v1/users"
 		};
 	};
-	rpc ListUsers (ListUsersRequest) returns (ListUsersReply);
+
+	rpc ListUsers (ListUsersRequest) returns (ListUsersReply){
+		option (google.api.http) = {
+			post: "/api/v1/users/list"
+			body: "*"
+		};
+	};
+
+	rpc LoginUsers (LoginUsersRequest) returns (LoginUsersReply) {
+		option (google.api.http) = {
+			post: "/api/v1/users/login"
+			body: "*"
+		};
+	}
+
+	rpc ExitUsersLogin (ExitUsersLoginRequest) returns (ExitUsersLoginReply) {
+		option (google.api.http) = {
+			delete: "/api/v1/users/login"
+		};
+	}
+
+	rpc PatchUsersLogin (PatchUsersLoginRequest) returns (PatchUsersLoginReply) {
+		option (google.api.http) = {
+			patch: "/api/v1/users/login"
+			body: "*"
+		};
+	}
+
+	rpc PatchPassword (PatchPasswordRequest) returns (PatchPasswordReply) {
+		option (google.api.http) = {
+			patch: "/api/v1/users/update"
+			body: "*"
+		};
+	}
+
 }
 
 message CreateUsersRequest {
@@ -42,14 +76,16 @@ message CreateUsersRequest {
 	}
 
 	string account = 1 [(validate.rules).string = {min_len: 1, max_len: 20}];
-	string phone = 2 [(validate.rules).string.pattern = "^1[345789]{1}\\d{9}$"];
-	string name = 3 [(validate.rules).string = {min_len: 1, max_len: 20}];
+	string phone = 2; // [(validate.rules).string.pattern = "^1[345789]{1}\\d{9}$"]
+	string name = 3; // [(validate.rules).string = {min_len: 1, max_len: 20}]
 	string password = 4 [(validate.rules).string.len = 32];
-	int32 age = 5 [(validate.rules).int32 = { gt: 0, lte: 999 }];
-	SexEnum sex = 6 [(validate.rules).enum = {in: [0,1,2]}];
-	string email = 7 [(validate.rules).string.email = true];
+	int32 age = 5; // [(validate.rules).int32 = { gt: 0, lte: 999 }]
+	SexEnum sex = 6; // [(validate.rules).enum = {in: [0,1,2]}]
+	string email = 7; // [(validate.rules).string.email = true]
 	string school = 8;
 	string address = 9;
+	string card_id = 10;
+	string card_name = 11;
 }
 
 message CreateUsersReply {
@@ -104,7 +140,7 @@ message PatchUsersRequest {
 
 message PatchUsersReply {
 	bool success = 1;
-	string msg = 2;
+	string message = 2;
 	message data {
 		string name = 1;
 		int32 age = 2;
@@ -124,3 +160,50 @@ message ListUsersRequest {
 
 }
 message ListUsersReply {}
+
+message LoginUsersRequest {
+		string account = 1;
+		string password = 2;
+}
+
+message LoginUsersReply {
+	bool success = 1; // 返回是否成功
+	string message = 2; // 返回信息
+	message data {
+	   string token = 1;
+		 string refresh_token = 2;
+		 string uid = 3;
+	}
+}
+message ExitUsersLoginRequest {
+	string uid = 1;
+}
+
+message ExitUsersLoginReply {
+	bool success = 1; // 返回是否成功
+	string message = 2; // 返回信息
+}
+
+message PatchUsersLoginRequest {
+	string refresh_token = 1;
+}
+
+message PatchUsersLoginReply {
+	bool success = 1; // 返回是否成功
+	string message = 2; // 返回信息
+	message data {
+		string uid = 1;
+		string token = 2;
+	}
+}
+
+message PatchPasswordRequest {
+	string account = 1;
+	string password = 2;
+	string old_password = 3;
+}
+
+message PatchPasswordReply {
+	bool success = 1; // 返回是否成功
+	string message = 2; // 返回信息
+}

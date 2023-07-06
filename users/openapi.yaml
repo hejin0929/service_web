@@ -11,6 +11,11 @@ paths:
             tags:
                 - Users
             operationId: Users_GetUsers
+            parameters:
+                - name: uuid
+                  in: query
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: OK
@@ -92,6 +97,123 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /api/v1/users/list:
+        post:
+            tags:
+                - Users
+            operationId: Users_ListUsers
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ListUsersRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListUsersReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v1/users/login:
+        post:
+            tags:
+                - Users
+            operationId: Users_LoginUsers
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LoginUsersRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LoginUsersReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        delete:
+            tags:
+                - Users
+            operationId: Users_ExitUsersLogin
+            parameters:
+                - name: uid
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExitUsersLoginReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        patch:
+            tags:
+                - Users
+            operationId: Users_PatchUsersLogin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchUsersLoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PatchUsersLoginReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v1/users/update:
+        patch:
+            tags:
+                - Users
+            operationId: Users_PatchPassword
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchPasswordRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PatchPasswordReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
 components:
     schemas:
         CreateUsersReply:
@@ -99,7 +221,7 @@ components:
             properties:
                 success:
                     type: boolean
-                msg:
+                message:
                     type: string
         CreateUsersRequest:
             type: object
@@ -124,6 +246,10 @@ components:
                     type: string
                 address:
                     type: string
+                cardId:
+                    type: string
+                cardName:
+                    type: string
         DeleteUsersReply:
             type: object
             properties:
@@ -131,12 +257,19 @@ components:
                     type: boolean
                 msg:
                     type: string
+        ExitUsersLoginReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
         GetUsersReply:
             type: object
             properties:
                 success:
                     type: boolean
-                msg:
+                message:
                     type: string
         GoogleProtobufAny:
             type: object
@@ -146,6 +279,54 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        ListUsersReply:
+            type: object
+            properties: {}
+        ListUsersRequest:
+            type: object
+            properties: {}
+        LoginUsersReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        LoginUsersRequest:
+            type: object
+            properties:
+                account:
+                    type: string
+                password:
+                    type: string
+        PatchPasswordReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        PatchPasswordRequest:
+            type: object
+            properties:
+                account:
+                    type: string
+                password:
+                    type: string
+                oldPassword:
+                    type: string
+        PatchUsersLoginReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        PatchUsersLoginRequest:
+            type: object
+            properties:
+                refreshToken:
+                    type: string
         Status:
             type: object
             properties:

@@ -1,15 +1,43 @@
 server:
   http:
-    addr: 0.0.0.0:8000
-    timeout: 1s
-  grpc:
     addr: 0.0.0.0:9000
     timeout: 1s
+  grpc:
+    addr: 0.0.0.0:9001
+    timeout: 1s
+  name: "userServer"
+  version: "1.0"
+  environment: "dev"
+
 data:
   database:
     driver: mysql
-    source: root:root@tcp(127.0.0.1:3306)/test
+    source: "root:ks123456@tcp(127.0.0.1:3306)/data?charset=utf8mb4&parseTime=True&loc=Local" # 本地数据库
+    min_idle_conns: 10
+    max_open_conns: 100
+    con_max_left_time: 1
+    databases: whw
   redis:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s
     write_timeout: 0.2s
+    db: 0
+    pool_size: 50
+    min_idle_conns: 10
+    max_retries: 3
+
+discovery:
+  consul:
+    addr: 127.0.0.1:8500
+    schema: http
+registry:
+  consul:
+    addr: 127.0.0.1:8500
+    schema: http
+
+trace:
+  enable: true
+  endpoint: http://127.0.0.1:14268/api/traces
+  trace_file_path: ./log/trace.log
+  exporter: jaeger
+  token:

@@ -19,11 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Users_CreateUsers_FullMethodName = "/api.v1.Users/CreateUsers"
-	Users_UpdateUsers_FullMethodName = "/api.v1.Users/UpdateUsers"
-	Users_DeleteUsers_FullMethodName = "/api.v1.Users/DeleteUsers"
-	Users_GetUsers_FullMethodName    = "/api.v1.Users/GetUsers"
-	Users_ListUsers_FullMethodName   = "/api.v1.Users/ListUsers"
+	Users_CreateUsers_FullMethodName     = "/api.v1.Users/CreateUsers"
+	Users_UpdateUsers_FullMethodName     = "/api.v1.Users/UpdateUsers"
+	Users_DeleteUsers_FullMethodName     = "/api.v1.Users/DeleteUsers"
+	Users_GetUsers_FullMethodName        = "/api.v1.Users/GetUsers"
+	Users_ListUsers_FullMethodName       = "/api.v1.Users/ListUsers"
+	Users_LoginUsers_FullMethodName      = "/api.v1.Users/LoginUsers"
+	Users_ExitUsersLogin_FullMethodName  = "/api.v1.Users/ExitUsersLogin"
+	Users_PatchUsersLogin_FullMethodName = "/api.v1.Users/PatchUsersLogin"
+	Users_PatchPassword_FullMethodName   = "/api.v1.Users/PatchPassword"
 )
 
 // UsersClient is the client API for Users service.
@@ -35,6 +39,10 @@ type UsersClient interface {
 	DeleteUsers(ctx context.Context, in *DeleteUsersRequest, opts ...grpc.CallOption) (*DeleteUsersReply, error)
 	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersReply, error)
 	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersReply, error)
+	LoginUsers(ctx context.Context, in *LoginUsersRequest, opts ...grpc.CallOption) (*LoginUsersReply, error)
+	ExitUsersLogin(ctx context.Context, in *ExitUsersLoginRequest, opts ...grpc.CallOption) (*ExitUsersLoginReply, error)
+	PatchUsersLogin(ctx context.Context, in *PatchUsersLoginRequest, opts ...grpc.CallOption) (*PatchUsersLoginReply, error)
+	PatchPassword(ctx context.Context, in *PatchPasswordRequest, opts ...grpc.CallOption) (*PatchPasswordReply, error)
 }
 
 type usersClient struct {
@@ -90,6 +98,42 @@ func (c *usersClient) ListUsers(ctx context.Context, in *ListUsersRequest, opts 
 	return out, nil
 }
 
+func (c *usersClient) LoginUsers(ctx context.Context, in *LoginUsersRequest, opts ...grpc.CallOption) (*LoginUsersReply, error) {
+	out := new(LoginUsersReply)
+	err := c.cc.Invoke(ctx, Users_LoginUsers_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersClient) ExitUsersLogin(ctx context.Context, in *ExitUsersLoginRequest, opts ...grpc.CallOption) (*ExitUsersLoginReply, error) {
+	out := new(ExitUsersLoginReply)
+	err := c.cc.Invoke(ctx, Users_ExitUsersLogin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersClient) PatchUsersLogin(ctx context.Context, in *PatchUsersLoginRequest, opts ...grpc.CallOption) (*PatchUsersLoginReply, error) {
+	out := new(PatchUsersLoginReply)
+	err := c.cc.Invoke(ctx, Users_PatchUsersLogin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersClient) PatchPassword(ctx context.Context, in *PatchPasswordRequest, opts ...grpc.CallOption) (*PatchPasswordReply, error) {
+	out := new(PatchPasswordReply)
+	err := c.cc.Invoke(ctx, Users_PatchPassword_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UsersServer is the server API for Users service.
 // All implementations must embed UnimplementedUsersServer
 // for forward compatibility
@@ -99,6 +143,10 @@ type UsersServer interface {
 	DeleteUsers(context.Context, *DeleteUsersRequest) (*DeleteUsersReply, error)
 	GetUsers(context.Context, *GetUsersRequest) (*GetUsersReply, error)
 	ListUsers(context.Context, *ListUsersRequest) (*ListUsersReply, error)
+	LoginUsers(context.Context, *LoginUsersRequest) (*LoginUsersReply, error)
+	ExitUsersLogin(context.Context, *ExitUsersLoginRequest) (*ExitUsersLoginReply, error)
+	PatchUsersLogin(context.Context, *PatchUsersLoginRequest) (*PatchUsersLoginReply, error)
+	PatchPassword(context.Context, *PatchPasswordRequest) (*PatchPasswordReply, error)
 	mustEmbedUnimplementedUsersServer()
 }
 
@@ -120,6 +168,18 @@ func (UnimplementedUsersServer) GetUsers(context.Context, *GetUsersRequest) (*Ge
 }
 func (UnimplementedUsersServer) ListUsers(context.Context, *ListUsersRequest) (*ListUsersReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
+}
+func (UnimplementedUsersServer) LoginUsers(context.Context, *LoginUsersRequest) (*LoginUsersReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginUsers not implemented")
+}
+func (UnimplementedUsersServer) ExitUsersLogin(context.Context, *ExitUsersLoginRequest) (*ExitUsersLoginReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExitUsersLogin not implemented")
+}
+func (UnimplementedUsersServer) PatchUsersLogin(context.Context, *PatchUsersLoginRequest) (*PatchUsersLoginReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchUsersLogin not implemented")
+}
+func (UnimplementedUsersServer) PatchPassword(context.Context, *PatchPasswordRequest) (*PatchPasswordReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchPassword not implemented")
 }
 func (UnimplementedUsersServer) mustEmbedUnimplementedUsersServer() {}
 
@@ -224,6 +284,78 @@ func _Users_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Users_LoginUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginUsersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).LoginUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Users_LoginUsers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).LoginUsers(ctx, req.(*LoginUsersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Users_ExitUsersLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExitUsersLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).ExitUsersLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Users_ExitUsersLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).ExitUsersLogin(ctx, req.(*ExitUsersLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Users_PatchUsersLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchUsersLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).PatchUsersLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Users_PatchUsersLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).PatchUsersLogin(ctx, req.(*PatchUsersLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Users_PatchPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchPasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).PatchPassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Users_PatchPassword_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).PatchPassword(ctx, req.(*PatchPasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Users_ServiceDesc is the grpc.ServiceDesc for Users service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +382,22 @@ var Users_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListUsers",
 			Handler:    _Users_ListUsers_Handler,
+		},
+		{
+			MethodName: "LoginUsers",
+			Handler:    _Users_LoginUsers_Handler,
+		},
+		{
+			MethodName: "ExitUsersLogin",
+			Handler:    _Users_ExitUsersLogin_Handler,
+		},
+		{
+			MethodName: "PatchUsersLogin",
+			Handler:    _Users_PatchUsersLogin_Handler,
+		},
+		{
+			MethodName: "PatchPassword",
+			Handler:    _Users_PatchPassword_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

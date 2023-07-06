@@ -2,11 +2,13 @@ package biz
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport"
+	"github.com/google/uuid"
+	"gorm.io/gorm"
 	pb "users/api/v1"
+	"users/pkg"
 )
 
 // UsersBiz 用户相关逻辑
@@ -15,24 +17,29 @@ type UsersBiz struct {
 	log  *log.Helper
 }
 
-type CreateUsersType struct {
+type Users struct {
+	gorm.Model
+	UID       string `json:"uid"`
+	IP        string `json:"ip"`
 	Account   string `json:"account"`
 	Phone     string `json:"phone"`
-	Name      string `json:"name"`
+	Email     string `json:"email"`
 	Password  string `json:"password"`
+	Avatar    string `json:"avatar"`
+	Equipment int    `json:"equipment"`
+	Status    int    `json:"status"`
+	Name      string `json:"name"`
 	Age       int    `json:"age"`
 	Sex       int    `json:"sex"`
-	Email     string `json:"email"`
-	School    string `json:"school"`
 	Address   string `json:"address"`
-	UUID      string `json:"uuid"`
-	IP        string `json:"ip"`
-	Equipment string `json:"equipment"`
+	School    string `json:"school"`
+	CardID    string `json:"card_id"`
+	CardName  string `json:"cardName"`
 }
 
 // UsersRepo is a user repo.
 type UsersRepo interface {
-	CreateUser(usersType *CreateUsersType) error
+	CreateUser(ctx context.Context, usersType *Users) error
 }
 
 type UsersUse struct {
@@ -47,15 +54,25 @@ func NewUsersUse(repo UsersRepo, logger log.Logger) *UsersUse {
 
 func (r *UsersUse) CreateUsers(ctx context.Context, req *pb.CreateUsersRequest) (res *pb.CreateUsersReply, err error) {
 
-	user := CreateUsersType{}
+	user := &Users{}
 
-	bytes, err := json.Marshal(req)
+	err = pkg.CopyTo(req, user)
 
-	err = json.Unmarshal(bytes, &user)
+	user.UID = uuid.New().String()
 
 	if tp, ok := transport.FromServerContext(ctx); ok {
 		println(fmt.Sprintf("remote_addr: %v", tp.RequestHeader().Get("RemoteAddr")))
 	}
+	err = r.repo.CreateUser(ctx, user)
 
+	res = new(pb.CreateUsersReply)
+
+	if err != nil {
+		res.Success = false
+		res.Message = err.Error()
+		return
+	}
+	res.Message = "添加成功"
+	res.Success = true
 	return
 }

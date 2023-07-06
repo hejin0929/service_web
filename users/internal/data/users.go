@@ -1,6 +1,8 @@
 package data
 
 import (
+	"context"
+	"errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"users/internal/biz"
 )
@@ -17,18 +19,34 @@ func NewUsersRepo(data *Data, logger log.Logger) *UsersRepo {
 	}
 }
 
-func (r *UsersRepo) CreateUser(usersType *biz.CreateUsersType) (err error) {
+func (r *UsersRepo) CreateUser(ctx context.Context, usersType *biz.Users) (err error) {
+
+	if !r.data.Mysql.Migrator().HasTable("users") {
+		_ = r.data.Mysql.AutoMigrate(usersType)
+	}
+	db := r.data.Mysql.Table("users").WithContext(ctx)
+
+	var nums int64
+
+	db.Where("account = ?", usersType.Account).Count(&nums)
+
+	if nums > 0 {
+		err = errors.New("账户已存在")
+		return
+	}
+	err = db.Create(usersType).Error
 	return
 }
 
-//func (r *UsersRepo) getUser() (user Users, err error) {
-//	return
-//}
-//
-//func (r *UsersRepo) patchUser() (user Users, err error) {
-//	return
-//}
-//
-//func (r *UsersRepo) deleteUser() (err error) {
-//	return
-//}
+func (r *UsersRepo) getUser() (user *biz.Users, err error) {
+
+	return
+}
+
+func (r *UsersRepo) patchUser() (user *biz.Users, err error) {
+	return
+}
+
+func (r *UsersRepo) deleteUser() (err error) {
+	return
+}
