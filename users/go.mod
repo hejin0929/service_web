@@ -3,6 +3,7 @@ module users
 go 1.18
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/dtm-labs/rockscache v0.1.1
 	github.com/envoyproxy/protoc-gen-validate v1.0.1
 	github.com/go-kratos/kratos/v2 v2.6.2
@@ -20,7 +21,6 @@ require (
 
 require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/go-kratos/aegis v0.2.0 // indirect

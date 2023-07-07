@@ -169,12 +169,16 @@ message LoginUsersRequest {
 message LoginUsersReply {
 	bool success = 1; // 返回是否成功
 	string message = 2; // 返回信息
-	message data {
-	   string token = 1;
-		 string refresh_token = 2;
-		 string uid = 3;
-	}
+	LoginData data = 3;
 }
+
+message LoginData {
+	string token = 1;
+	string refresh_token = 2;
+	string uid = 3;
+}
+
+
 message ExitUsersLoginRequest {
 	string uid = 1;
 }

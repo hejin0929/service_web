@@ -1,9 +1,29 @@
 package pkg
 
 import (
+	"context"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/go-kratos/kratos/v2/errors"
+	"strconv"
 	"time"
+)
+
+const (
+	reason string = "UNAUTHORIZED"
+)
+
+var (
+	ErrMissingJwtToken        = errors.Unauthorized(reason, "JWT token is missing")
+	ErrMissingKeyFunc         = errors.Unauthorized(reason, "keyFunc is missing")
+	ErrTokenInvalid           = errors.Unauthorized(reason, "Token is invalid")
+	ErrTokenExpired           = errors.Unauthorized(reason, "JWT token has expired")
+	ErrTokenParseFail         = errors.Unauthorized(reason, "Fail to parse JWT token ")
+	ErrUnSupportSigningMethod = errors.Unauthorized(reason, "Wrong signing method")
+	ErrWrongContext           = errors.Unauthorized(reason, "Wrong context for middleware")
+	ErrNeedTokenProvider      = errors.Unauthorized(reason, "Token provider is missing")
+	ErrSignToken              = errors.Unauthorized(reason, "Can not sign token.Is the key correct?")
+	ErrGetKey                 = errors.Unauthorized(reason, "Can not get key while signing token")
 )
 
 // 自定义中间件，用于验证 JWT Token
@@ -36,15 +56,15 @@ import (
 //	}
 //}
 
-// 定义 JWTClaims 结构体作为 JWT Token 的 Claims
+// JWTClaims 定义 JWTClaims 结构体作为 JWT Token 的 Claims
 type JWTClaims struct {
 	jwt.StandardClaims
 	UserID   string `json:"user_id"`
 	Username string `json:"username"`
 }
 
-// 生成 JWT Token
-func generateToken(userID, username string) (string, error) {
+// GenerateToken 生成 JWT Token
+func GenerateToken(userID, username string) (string, error) {
 	// 创建一个新的 JWTClaims 对象，设置有效期和自定义的用户信息
 	claims := &JWTClaims{
 		StandardClaims: jwt.StandardClaims{
@@ -70,8 +90,8 @@ func generateToken(userID, username string) (string, error) {
 	return signedToken, nil
 }
 
-// 解析和验证 Token
-func parseToken(tokenString, secretKey string) (jwt.MapClaims, error) {
+// ParseToken 解析和验证 Token
+func ParseToken(tokenString, secretKey string) (jwt.MapClaims, error) {
 	// 解析 Token
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// 指定验证的算法和密钥
@@ -95,5 +115,30 @@ func parseToken(tokenString, secretKey string) (jwt.MapClaims, error) {
 		return nil, fmt.Errorf("failed to parse token claims")
 	}
 
+	// 从声明中提取时间戳
+	expirationTimeFloat64, ok := claims["exp"].(float64)
+	if !ok {
+		return nil, fmt.Errorf("failed to extract expiration time")
+	}
+
+	expirationTime := time.Unix(int64(expirationTimeFloat64), 0).Unix()
+
+	if time.Now().Unix() > expirationTime {
+		return nil, fmt.Errorf("token已过期")
+	}
 	return claims, nil
+}
+
+// UseUserID 在业务逻辑层使用上下文中的用户ID
+func UseUserID(ctx context.Context) (id int, err error) {
+	userID, ok := ctx.Value("user_id").(string)
+	fmt.Println("this is a ", ctx, "--->> > >>>>>>>", userID)
+	if !ok {
+		// 无法获取用户ID
+		return 0, fmt.Errorf("ID为空")
+	}
+
+	return strconv.Atoi(userID)
+	// 使用用户ID进行业务逻辑处理
+	// ...
 }

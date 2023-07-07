@@ -34,7 +34,7 @@ func (s *UsersService) ListUsers(ctx context.Context, req *pb.ListUsersRequest) 
 	return &pb.ListUsersReply{}, nil
 }
 func (s *UsersService) LoginUsers(ctx context.Context, req *pb.LoginUsersRequest) (*pb.LoginUsersReply, error) {
-	return &pb.LoginUsersReply{}, nil
+	return s.biz.LoginUsers(ctx, req)
 }
 func (s *UsersService) ExitUsersLogin(ctx context.Context, req *pb.ExitUsersLoginRequest) (*pb.ExitUsersLoginReply, error) {
 	return &pb.ExitUsersLoginReply{}, nil

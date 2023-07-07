@@ -3,10 +3,12 @@ package biz
 import (
 	"context"
 	"fmt"
+	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"strconv"
 	pb "users/api/v1"
 	"users/pkg"
 )
@@ -46,6 +48,7 @@ type UsersRepo interface {
 type UsersUse struct {
 	repo UsersRepo
 	log  *log.Helper
+	ID   uint
 }
 
 // NewUsersUse new a Greeter NewUsersUse.
@@ -79,17 +82,46 @@ func (r *UsersUse) CreateUsers(ctx context.Context, req *pb.CreateUsersRequest) 
 }
 
 func (r *UsersUse) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (res *pb.GetUsersReply, err error) {
-
-	user, err := r.repo.GetUser(ctx, "uid", req.Uuid)
+	id, err := pkg.UseUserID(ctx)
+	fmt.Println("UseUserID", id)
+	user, err := r.repo.GetUser(ctx, "id", id)
 
 	res = new(pb.GetUsersReply)
 
 	if user.ID == 0 {
 		res.Success = false
 		res.Message = "获取用户信息失败"
-
 		return
 	}
 
+	fmt.Errorf("this is a update ?? ")
+
+	return
+}
+
+func (r *UsersUse) LoginUsers(ctx context.Context, req *pb.LoginUsersRequest) (res *pb.LoginUsersReply, err error) {
+
+	user, err := r.repo.GetUser(ctx, "account", req.Account)
+
+	res = new(pb.LoginUsersReply)
+	res.Data = new(pb.LoginData)
+
+	if user.ID == 0 {
+		res.Success = false
+		res.Message = "暂无该用户信息"
+		err = errors.New(500, "USER_NOT_FOUND", "account nonentity")
+		return
+	}
+
+	if user.Password != req.Password {
+		res.Success = false
+		res.Message = "用户密码错误"
+		return
+	}
+
+	res.Success = true
+	res.Message = "登陆成功"
+	res.Data.Uid = user.UID
+	res.Data.Token, err = pkg.GenerateToken(strconv.Itoa(int(user.ID)), user.Account)
 	return
 }

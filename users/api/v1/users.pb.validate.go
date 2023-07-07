@@ -1463,6 +1463,35 @@ func (m *LoginUsersReply) validate(all bool) error {
 
 	// no validation rules for Message
 
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LoginUsersReplyValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LoginUsersReplyValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LoginUsersReplyValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return LoginUsersReplyMultiError(errors)
 	}
@@ -1540,6 +1569,111 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = LoginUsersReplyValidationError{}
+
+// Validate checks the field values on LoginData with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *LoginData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on LoginData with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in LoginDataMultiError, or nil
+// if none found.
+func (m *LoginData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *LoginData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Token
+
+	// no validation rules for RefreshToken
+
+	// no validation rules for Uid
+
+	if len(errors) > 0 {
+		return LoginDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// LoginDataMultiError is an error wrapping multiple validation errors returned
+// by LoginData.ValidateAll() if the designated constraints aren't met.
+type LoginDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m LoginDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m LoginDataMultiError) AllErrors() []error { return m }
+
+// LoginDataValidationError is the validation error returned by
+// LoginData.Validate if the designated constraints aren't met.
+type LoginDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e LoginDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e LoginDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e LoginDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e LoginDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e LoginDataValidationError) ErrorName() string { return "LoginDataValidationError" }
+
+// Error satisfies the builtin error interface
+func (e LoginDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sLoginData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = LoginDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = LoginDataValidationError{}
 
 // Validate checks the field values on ExitUsersLoginRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -2422,114 +2556,6 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = PatchUsersReplyDataValidationError{}
-
-// Validate checks the field values on LoginUsersReplyData with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *LoginUsersReplyData) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on LoginUsersReplyData with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// LoginUsersReplyDataMultiError, or nil if none found.
-func (m *LoginUsersReplyData) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *LoginUsersReplyData) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Token
-
-	// no validation rules for RefreshToken
-
-	// no validation rules for Uid
-
-	if len(errors) > 0 {
-		return LoginUsersReplyDataMultiError(errors)
-	}
-
-	return nil
-}
-
-// LoginUsersReplyDataMultiError is an error wrapping multiple validation
-// errors returned by LoginUsersReplyData.ValidateAll() if the designated
-// constraints aren't met.
-type LoginUsersReplyDataMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m LoginUsersReplyDataMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m LoginUsersReplyDataMultiError) AllErrors() []error { return m }
-
-// LoginUsersReplyDataValidationError is the validation error returned by
-// LoginUsersReplyData.Validate if the designated constraints aren't met.
-type LoginUsersReplyDataValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e LoginUsersReplyDataValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e LoginUsersReplyDataValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e LoginUsersReplyDataValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e LoginUsersReplyDataValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e LoginUsersReplyDataValidationError) ErrorName() string {
-	return "LoginUsersReplyDataValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e LoginUsersReplyDataValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sLoginUsersReplyData.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = LoginUsersReplyDataValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = LoginUsersReplyDataValidationError{}
 
 // Validate checks the field values on PatchUsersLoginReplyData with the rules
 // defined in the proto definition for this message. If any rules are
