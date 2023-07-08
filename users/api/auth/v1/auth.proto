@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package api.auth.v1;
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "users/api/auth/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.v1";
+
+service Users {
+
+	rpc LoginUsers (LoginUsersRequest) returns (LoginUsersReply) {
+		option (google.api.http) = {
+			post: "/api/v1/login"
+			body: "*"
+		};
+	}
+
+	rpc ExitUsersLogin (ExitUsersLoginRequest) returns (ExitUsersLoginReply) {
+		option (google.api.http) = {
+			delete: "/api/v1/login"
+		};
+	}
+
+	rpc PatchUsersLogin (PatchUsersLoginRequest) returns (PatchUsersLoginReply) {
+		option (google.api.http) = {
+			patch: "/api/v1/login"
+			body: "*"
+		};
+	}
+
+	rpc AuthLogin (AuthLoginRequest) returns (AuthLoginReply);
+
+}
+
+message LoginUsersRequest {
+	string account = 1 [(validate.rules).string.min_len = 2];
+	string password = 2;
+}
+
+message LoginUsersReply {
+	bool success = 1; // 返回是否成功
+	string message = 2; // 返回信息
+	LoginData data = 3;
+}
+
+message LoginData {
+	string token = 1;
+	string refresh_token = 2;
+	string uid = 3;
+}
+
+
+message ExitUsersLoginRequest {
+	string uid = 1;
+}
+
+message ExitUsersLoginReply {
+	bool success = 1; // 返回是否成功
+	string message = 2; // 返回信息
+}
+
+message PatchUsersLoginRequest {
+	string refresh_token = 1;
+}
+
+message PatchUsersLoginReply {
+	bool success = 1; // 返回是否成功
+	string message = 2; // 返回信息
+	message data {
+		string uid = 1;
+		string token = 2;
+	}
+}
+
+message PatchPasswordReply {
+	bool success = 1; // 返回是否成功
+	string message = 2; // 返回信息
+}
+
+
+message AuthLoginRequest {
+  string token = 1;
+}
+
+
+message AuthLoginReply {
+	bool success = 1;
+	string message = 2;
+}

@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/go-kratos/kratos/v2/middleware/validate"
-	v1 "users/api/v1"
+	v1 "users/api/users/v1"
 	"users/internal/conf"
 	"users/internal/service"
 

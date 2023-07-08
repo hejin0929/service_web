@@ -51,3 +51,8 @@ func (r *UsersRepo) patchUser() (user *biz.Users, err error) {
 func (r *UsersRepo) deleteUser() (err error) {
 	return
 }
+
+func (r *UsersRepo) SaveToken(ctx context.Context, id string, token string) (err error) {
+	err = r.data.RedisCli.Set(ctx, id, token, 0).Err()
+	return
+}

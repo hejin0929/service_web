@@ -9,7 +9,8 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"strconv"
-	pb "users/api/v1"
+	pb2 "users/api/auth/v1"
+	pb "users/api/users/v1"
 	"users/pkg"
 )
 
@@ -43,6 +44,7 @@ type Users struct {
 type UsersRepo interface {
 	CreateUser(ctx context.Context, usersType *Users) error
 	GetUser(ctx context.Context, name string, value interface{}) (*Users, error)
+	SaveToken(ctx context.Context, id string, token string) error
 }
 
 type UsersUse struct {
@@ -85,7 +87,6 @@ func (r *UsersUse) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (res *
 	id, err := pkg.UseUserID(ctx)
 	fmt.Println("UseUserID", id)
 	user, err := r.repo.GetUser(ctx, "id", id)
-
 	res = new(pb.GetUsersReply)
 
 	if user.ID == 0 {
@@ -93,18 +94,19 @@ func (r *UsersUse) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (res *
 		res.Message = "获取用户信息失败"
 		return
 	}
-
-	fmt.Errorf("this is a update ?? ")
-
+	res.Success = true
+	res.Message = "获取成功"
+	res.Data = new(pb.GetUsersData)
+	err = pkg.CopyTo(user, &res.Data)
 	return
 }
 
-func (r *UsersUse) LoginUsers(ctx context.Context, req *pb.LoginUsersRequest) (res *pb.LoginUsersReply, err error) {
+func (r *UsersUse) LoginUsers(ctx context.Context, req *pb.LoginUsersRequest) (res *pb2.LoginUsersReply, err error) {
 
 	user, err := r.repo.GetUser(ctx, "account", req.Account)
 
-	res = new(pb.LoginUsersReply)
-	res.Data = new(pb.LoginData)
+	res = new(pb2.LoginUsersReply)
+	res.Data = new(pb2.LoginData)
 
 	if user.ID == 0 {
 		res.Success = false
@@ -123,5 +125,6 @@ func (r *UsersUse) LoginUsers(ctx context.Context, req *pb.LoginUsersRequest) (r
 	res.Message = "登陆成功"
 	res.Data.Uid = user.UID
 	res.Data.Token, err = pkg.GenerateToken(strconv.Itoa(int(user.ID)), user.Account)
+	err = r.repo.SaveToken(ctx, strconv.Itoa(int(user.ID)), res.Data.Token)
 	return
 }

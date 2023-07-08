@@ -11,7 +11,7 @@ import (
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"os"
-	v1 "users/api/v1"
+	v1 "users/api/users/v1"
 	"users/internal/conf"
 	"users/internal/service"
 	"users/pkg"
@@ -38,13 +38,14 @@ func NewHTTPServer(c *conf.Server, greeter *service.UsersService, logger log.Log
 	}
 
 	opts = append(opts, http.Middleware(func(handler middleware.Handler) middleware.Handler {
-
 		return func(ctx context.Context, req interface{}) (interface{}, error) {
-
 			if cc, ok := transport.FromServerContext(ctx); ok {
 				if cc.Operation() == "/api.v1.Users/LoginUsers" || cc.Operation() == "/api.v1.Users/CreateUsers" {
 					return handler(ctx, req)
 				}
+				session := cc.RequestHeader().Get("session")
+
+				fmt.Println("this is a value ?? ", session)
 
 				token := cc.RequestHeader().Get("Authorization")
 				if token == "" {
@@ -61,20 +62,12 @@ func NewHTTPServer(c *conf.Server, greeter *service.UsersService, logger log.Log
 					return nil, fmt.Errorf("无法拿到token信息")
 				}
 
-				context.WithValue(ctx, "user_id", userID)
+				ctx = context.WithValue(ctx, "user_id", userID)
 
 				if err != nil {
 					return nil, err
 				}
 
-				//if cc.Operation() == "/api.v1.Register/RefreshTokenAuth" {
-				//	refresh := cc.RequestHeader().Get("Refresh")
-				//	_, err := biz.VerifyRefreshToken(refresh)
-				//
-				//	if err != nil {
-				//		return nil, err
-				//	}
-				//}
 				return handler(ctx, req)
 			}
 

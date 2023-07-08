@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.6.1
 // - protoc             v3.21.12
-// source: api/v1/users.proto
+// source: api/users/v1/users.proto
 
 package v1
 
@@ -19,25 +19,19 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationUsersCreateUsers = "/api.v1.Users/CreateUsers"
-const OperationUsersDeleteUsers = "/api.v1.Users/DeleteUsers"
-const OperationUsersExitUsersLogin = "/api.v1.Users/ExitUsersLogin"
-const OperationUsersGetUsers = "/api.v1.Users/GetUsers"
-const OperationUsersListUsers = "/api.v1.Users/ListUsers"
-const OperationUsersLoginUsers = "/api.v1.Users/LoginUsers"
-const OperationUsersPatchPassword = "/api.v1.Users/PatchPassword"
-const OperationUsersPatchUsersLogin = "/api.v1.Users/PatchUsersLogin"
-const OperationUsersUpdateUsers = "/api.v1.Users/UpdateUsers"
+const OperationUsersCreateUsers = "/api.users.v1.Users/CreateUsers"
+const OperationUsersDeleteUsers = "/api.users.v1.Users/DeleteUsers"
+const OperationUsersGetUsers = "/api.users.v1.Users/GetUsers"
+const OperationUsersListUsers = "/api.users.v1.Users/ListUsers"
+const OperationUsersPatchPassword = "/api.users.v1.Users/PatchPassword"
+const OperationUsersUpdateUsers = "/api.users.v1.Users/UpdateUsers"
 
 type UsersHTTPServer interface {
 	CreateUsers(context.Context, *CreateUsersRequest) (*CreateUsersReply, error)
 	DeleteUsers(context.Context, *DeleteUsersRequest) (*DeleteUsersReply, error)
-	ExitUsersLogin(context.Context, *ExitUsersLoginRequest) (*ExitUsersLoginReply, error)
 	GetUsers(context.Context, *GetUsersRequest) (*GetUsersReply, error)
 	ListUsers(context.Context, *ListUsersRequest) (*ListUsersReply, error)
-	LoginUsers(context.Context, *LoginUsersRequest) (*LoginUsersReply, error)
 	PatchPassword(context.Context, *PatchPasswordRequest) (*PatchPasswordReply, error)
-	PatchUsersLogin(context.Context, *PatchUsersLoginRequest) (*PatchUsersLoginReply, error)
 	UpdateUsers(context.Context, *UpdateUsersRequest) (*UpdateUsersReply, error)
 }
 
@@ -48,9 +42,6 @@ func RegisterUsersHTTPServer(s *http.Server, srv UsersHTTPServer) {
 	r.DELETE("/api/v1/users", _Users_DeleteUsers0_HTTP_Handler(srv))
 	r.GET("/api/v1/users", _Users_GetUsers0_HTTP_Handler(srv))
 	r.POST("/api/v1/users/list", _Users_ListUsers0_HTTP_Handler(srv))
-	r.POST("/api/v1/users/login", _Users_LoginUsers0_HTTP_Handler(srv))
-	r.DELETE("/api/v1/users/login", _Users_ExitUsersLogin0_HTTP_Handler(srv))
-	r.PATCH("/api/v1/users/login", _Users_PatchUsersLogin0_HTTP_Handler(srv))
 	r.PATCH("/api/v1/users/update", _Users_PatchPassword0_HTTP_Handler(srv))
 }
 
@@ -149,63 +140,6 @@ func _Users_ListUsers0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Context) 
 	}
 }
 
-func _Users_LoginUsers0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in LoginUsersRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationUsersLoginUsers)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.LoginUsers(ctx, req.(*LoginUsersRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*LoginUsersReply)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Users_ExitUsersLogin0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in ExitUsersLoginRequest
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationUsersExitUsersLogin)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.ExitUsersLogin(ctx, req.(*ExitUsersLoginRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*ExitUsersLoginReply)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Users_PatchUsersLogin0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in PatchUsersLoginRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationUsersPatchUsersLogin)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.PatchUsersLogin(ctx, req.(*PatchUsersLoginRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*PatchUsersLoginReply)
-		return ctx.Result(200, reply)
-	}
-}
-
 func _Users_PatchPassword0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in PatchPasswordRequest
@@ -228,12 +162,9 @@ func _Users_PatchPassword0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Conte
 type UsersHTTPClient interface {
 	CreateUsers(ctx context.Context, req *CreateUsersRequest, opts ...http.CallOption) (rsp *CreateUsersReply, err error)
 	DeleteUsers(ctx context.Context, req *DeleteUsersRequest, opts ...http.CallOption) (rsp *DeleteUsersReply, err error)
-	ExitUsersLogin(ctx context.Context, req *ExitUsersLoginRequest, opts ...http.CallOption) (rsp *ExitUsersLoginReply, err error)
 	GetUsers(ctx context.Context, req *GetUsersRequest, opts ...http.CallOption) (rsp *GetUsersReply, err error)
 	ListUsers(ctx context.Context, req *ListUsersRequest, opts ...http.CallOption) (rsp *ListUsersReply, err error)
-	LoginUsers(ctx context.Context, req *LoginUsersRequest, opts ...http.CallOption) (rsp *LoginUsersReply, err error)
 	PatchPassword(ctx context.Context, req *PatchPasswordRequest, opts ...http.CallOption) (rsp *PatchPasswordReply, err error)
-	PatchUsersLogin(ctx context.Context, req *PatchUsersLoginRequest, opts ...http.CallOption) (rsp *PatchUsersLoginReply, err error)
 	UpdateUsers(ctx context.Context, req *UpdateUsersRequest, opts ...http.CallOption) (rsp *UpdateUsersReply, err error)
 }
 
@@ -271,19 +202,6 @@ func (c *UsersHTTPClientImpl) DeleteUsers(ctx context.Context, in *DeleteUsersRe
 	return &out, err
 }
 
-func (c *UsersHTTPClientImpl) ExitUsersLogin(ctx context.Context, in *ExitUsersLoginRequest, opts ...http.CallOption) (*ExitUsersLoginReply, error) {
-	var out ExitUsersLoginReply
-	pattern := "/api/v1/users/login"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationUsersExitUsersLogin))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
 func (c *UsersHTTPClientImpl) GetUsers(ctx context.Context, in *GetUsersRequest, opts ...http.CallOption) (*GetUsersReply, error) {
 	var out GetUsersReply
 	pattern := "/api/v1/users"
@@ -310,37 +228,11 @@ func (c *UsersHTTPClientImpl) ListUsers(ctx context.Context, in *ListUsersReques
 	return &out, err
 }
 
-func (c *UsersHTTPClientImpl) LoginUsers(ctx context.Context, in *LoginUsersRequest, opts ...http.CallOption) (*LoginUsersReply, error) {
-	var out LoginUsersReply
-	pattern := "/api/v1/users/login"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationUsersLoginUsers))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
 func (c *UsersHTTPClientImpl) PatchPassword(ctx context.Context, in *PatchPasswordRequest, opts ...http.CallOption) (*PatchPasswordReply, error) {
 	var out PatchPasswordReply
 	pattern := "/api/v1/users/update"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationUsersPatchPassword))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "PATCH", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *UsersHTTPClientImpl) PatchUsersLogin(ctx context.Context, in *PatchUsersLoginRequest, opts ...http.CallOption) (*PatchUsersLoginReply, error) {
-	var out PatchUsersLoginReply
-	pattern := "/api/v1/users/login"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationUsersPatchUsersLogin))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "PATCH", path, in, &out, opts...)
 	if err != nil {

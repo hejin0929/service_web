@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package api.v1;
+package api.users.v1;
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 
-option go_package = "users/api/v1;v1";
+option go_package = "users/api/users/v1;v1";
 option java_multiple_files = true;
 option java_package = "api.v1";
 
@@ -39,26 +39,6 @@ service Users {
 		};
 	};
 
-	rpc LoginUsers (LoginUsersRequest) returns (LoginUsersReply) {
-		option (google.api.http) = {
-			post: "/api/v1/users/login"
-			body: "*"
-		};
-	}
-
-	rpc ExitUsersLogin (ExitUsersLoginRequest) returns (ExitUsersLoginReply) {
-		option (google.api.http) = {
-			delete: "/api/v1/users/login"
-		};
-	}
-
-	rpc PatchUsersLogin (PatchUsersLoginRequest) returns (PatchUsersLoginReply) {
-		option (google.api.http) = {
-			patch: "/api/v1/users/login"
-			body: "*"
-		};
-	}
-
 	rpc PatchPassword (PatchPasswordRequest) returns (PatchPasswordReply) {
 		option (google.api.http) = {
 			patch: "/api/v1/users/update"
@@ -89,7 +69,7 @@ message CreateUsersRequest {
 }
 
 message CreateUsersReply {
-  bool success = 1; // 返回是否成功
+	bool success = 1; // 返回是否成功
 	string message = 2; // 返回信息
 }
 
@@ -111,31 +91,34 @@ message GetUsersRequest {
 message GetUsersReply {
 	bool success = 1;
 	string message = 2;
-	message data {
-		string name = 1;
-		int32 age = 2;
-		string phone = 3;
-		int32 sex = 4;
-		string account = 5;
-		string email = 6;
-		string address = 7;
-		string avatar = 8;
-		int32 status = 9;
-		string uuid = 10;
-		string school = 11;
-	}
+	GetUsersData data = 3;
+}
+
+
+message GetUsersData {
+	string name = 1;
+	int32 age = 2;
+	string phone = 3;
+	int32 sex = 4;
+	string account = 5;
+	string email = 6;
+	string address = 7;
+	string avatar = 8;
+	int32 status = 9;
+	string uid = 10;
+	string school = 11;
 }
 
 message PatchUsersRequest {
-	 string name = 1;
-	 int32 age = 2;
-	 string address =3;
-	 string email = 4;
-	 string avatar = 5;
-	 string school = 6;
-	 string phone = 7;
-	 int32 sex = 8;
-	 string uuid = 9;
+	string name = 1;
+	int32 age = 2;
+	string address =3;
+	string email = 4;
+	string avatar = 5;
+	string school = 6;
+	string phone = 7;
+	int32 sex = 8;
+	string uuid = 9;
 }
 
 message PatchUsersReply {
@@ -162,43 +145,8 @@ message ListUsersRequest {
 message ListUsersReply {}
 
 message LoginUsersRequest {
-		string account = 1;
-		string password = 2;
-}
-
-message LoginUsersReply {
-	bool success = 1; // 返回是否成功
-	string message = 2; // 返回信息
-	LoginData data = 3;
-}
-
-message LoginData {
-	string token = 1;
-	string refresh_token = 2;
-	string uid = 3;
-}
-
-
-message ExitUsersLoginRequest {
-	string uid = 1;
-}
-
-message ExitUsersLoginReply {
-	bool success = 1; // 返回是否成功
-	string message = 2; // 返回信息
-}
-
-message PatchUsersLoginRequest {
-	string refresh_token = 1;
-}
-
-message PatchUsersLoginReply {
-	bool success = 1; // 返回是否成功
-	string message = 2; // 返回信息
-	message data {
-		string uid = 1;
-		string token = 2;
-	}
+	string account = 1;
+	string password = 2;
 }
 
 message PatchPasswordRequest {

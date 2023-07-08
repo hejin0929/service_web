@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package api.v1;
+package api.user.v1;
 
-option go_package = "users/api/v1;v1";
+option go_package = "users/api/users/v1;v1";
 option java_multiple_files = true;
 option java_package = "api.v1";
 

@@ -132,7 +132,6 @@ func ParseToken(tokenString, secretKey string) (jwt.MapClaims, error) {
 // UseUserID 在业务逻辑层使用上下文中的用户ID
 func UseUserID(ctx context.Context) (id int, err error) {
 	userID, ok := ctx.Value("user_id").(string)
-	fmt.Println("this is a ", ctx, "--->> > >>>>>>>", userID)
 	if !ok {
 		// 无法获取用户ID
 		return 0, fmt.Errorf("ID为空")
