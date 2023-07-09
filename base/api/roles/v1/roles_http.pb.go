@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.6.1
 // - protoc             v3.21.12
-// source: roles/v1/roles.proto
+// source: base/v1/base.proto
 
 package v1
 
@@ -19,9 +19,9 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationRolesCreateRoles = "/api.roles.v1.Roles/CreateRoles"
-const OperationRolesGetRoles = "/api.roles.v1.Roles/GetRoles"
-const OperationRolesUpdateRoles = "/api.roles.v1.Roles/UpdateRoles"
+const OperationRolesCreateRoles = "/api.base.v1.Roles/CreateRoles"
+const OperationRolesGetRoles = "/api.base.v1.Roles/GetRoles"
+const OperationRolesUpdateRoles = "/api.base.v1.Roles/UpdateRoles"
 
 type RolesHTTPServer interface {
 	CreateRoles(context.Context, *CreateRolesRequest) (*CreateRolesReply, error)
@@ -31,9 +31,9 @@ type RolesHTTPServer interface {
 
 func RegisterRolesHTTPServer(s *http.Server, srv RolesHTTPServer) {
 	r := s.Route("/")
-	r.POST("/api/v1/base/roles", _Roles_CreateRoles0_HTTP_Handler(srv))
-	r.PATCH("/api/v1/base/roles", _Roles_UpdateRoles0_HTTP_Handler(srv))
-	r.GET("/api/v1/base/roles", _Roles_GetRoles0_HTTP_Handler(srv))
+	r.POST("/api/v1/base/base", _Roles_CreateRoles0_HTTP_Handler(srv))
+	r.PATCH("/api/v1/base/base", _Roles_UpdateRoles0_HTTP_Handler(srv))
+	r.GET("/api/v1/base/base", _Roles_GetRoles0_HTTP_Handler(srv))
 }
 
 func _Roles_CreateRoles0_HTTP_Handler(srv RolesHTTPServer) func(ctx http.Context) error {
@@ -109,7 +109,7 @@ func NewRolesHTTPClient(client *http.Client) RolesHTTPClient {
 
 func (c *RolesHTTPClientImpl) CreateRoles(ctx context.Context, in *CreateRolesRequest, opts ...http.CallOption) (*CreateRolesReply, error) {
 	var out CreateRolesReply
-	pattern := "/api/v1/base/roles"
+	pattern := "/api/v1/base/base"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationRolesCreateRoles))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -122,7 +122,7 @@ func (c *RolesHTTPClientImpl) CreateRoles(ctx context.Context, in *CreateRolesRe
 
 func (c *RolesHTTPClientImpl) GetRoles(ctx context.Context, in *GetRolesRequest, opts ...http.CallOption) (*GetRolesReply, error) {
 	var out GetRolesReply
-	pattern := "/api/v1/base/roles"
+	pattern := "/api/v1/base/base"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationRolesGetRoles))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -135,7 +135,7 @@ func (c *RolesHTTPClientImpl) GetRoles(ctx context.Context, in *GetRolesRequest,
 
 func (c *RolesHTTPClientImpl) UpdateRoles(ctx context.Context, in *UpdateRolesRequest, opts ...http.CallOption) (*UpdateRolesReply, error) {
 	var out UpdateRolesReply
-	pattern := "/api/v1/base/roles"
+	pattern := "/api/v1/base/base"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationRolesUpdateRoles))
 	opts = append(opts, http.PathTemplate(pattern))

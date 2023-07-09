@@ -1,16 +1,17 @@
 package server
 
 import (
+	v1 "base/api/district/v1"
+	roles "base/api/roles/v1"
+	"base/internal/conf"
+	"base/internal/service"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	v1 "roles/api/district/v1"
-	"roles/internal/conf"
-	"roles/internal/service"
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, greeter *service.DistrictService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, greeter *service.DistrictService, logger log.Logger, rolesService *service.RolesService) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -61,5 +62,6 @@ func NewGRPCServer(c *conf.Server, greeter *service.DistrictService, logger log.
 
 	srv := grpc.NewServer(opts...)
 	v1.RegisterDistrictServer(srv, greeter)
+	roles.RegisterRolesServer(srv, rolesService)
 	return srv
 }

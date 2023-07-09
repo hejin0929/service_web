@@ -1,9 +1,9 @@
 package biz
 
 import (
+	pb "base/api/district/v1"
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	pb "roles/api/district/v1"
 	"time"
 )
 

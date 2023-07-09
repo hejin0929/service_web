@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.30.0
 // 	protoc        v3.21.12
-// source: roles/v1/roles.proto
+// source: base/v1/base.proto
 
 package v1
 
@@ -830,30 +830,30 @@ func file_roles_v1_roles_proto_rawDescGZIP() []byte {
 
 var file_roles_v1_roles_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_roles_v1_roles_proto_goTypes = []interface{}{
-	(*CreateRolesRequest)(nil), // 0: api.roles.v1.CreateRolesRequest
-	(*CreateRolesReply)(nil),   // 1: api.roles.v1.CreateRolesReply
-	(*UpdateRolesRequest)(nil), // 2: api.roles.v1.UpdateRolesRequest
-	(*UpdateRolesReply)(nil),   // 3: api.roles.v1.UpdateRolesReply
-	(*DeleteRolesRequest)(nil), // 4: api.roles.v1.DeleteRolesRequest
-	(*DeleteRolesReply)(nil),   // 5: api.roles.v1.DeleteRolesReply
-	(*GetRolesRequest)(nil),    // 6: api.roles.v1.GetRolesRequest
-	(*GetRolesReply)(nil),      // 7: api.roles.v1.GetRolesReply
-	(*ListRolesRequest)(nil),   // 8: api.roles.v1.ListRolesRequest
-	(*ListRolesReply)(nil),     // 9: api.roles.v1.ListRolesReply
-	(*RolesMessage)(nil),       // 10: api.roles.v1.RolesMessage
+	(*CreateRolesRequest)(nil), // 0: api.base.v1.CreateRolesRequest
+	(*CreateRolesReply)(nil),   // 1: api.base.v1.CreateRolesReply
+	(*UpdateRolesRequest)(nil), // 2: api.base.v1.UpdateRolesRequest
+	(*UpdateRolesReply)(nil),   // 3: api.base.v1.UpdateRolesReply
+	(*DeleteRolesRequest)(nil), // 4: api.base.v1.DeleteRolesRequest
+	(*DeleteRolesReply)(nil),   // 5: api.base.v1.DeleteRolesReply
+	(*GetRolesRequest)(nil),    // 6: api.base.v1.GetRolesRequest
+	(*GetRolesReply)(nil),      // 7: api.base.v1.GetRolesReply
+	(*ListRolesRequest)(nil),   // 8: api.base.v1.ListRolesRequest
+	(*ListRolesReply)(nil),     // 9: api.base.v1.ListRolesReply
+	(*RolesMessage)(nil),       // 10: api.base.v1.RolesMessage
 }
 var file_roles_v1_roles_proto_depIdxs = []int32{
-	10, // 0: api.roles.v1.GetRolesReply.data:type_name -> api.roles.v1.RolesMessage
-	0,  // 1: api.roles.v1.Roles.CreateRoles:input_type -> api.roles.v1.CreateRolesRequest
-	2,  // 2: api.roles.v1.Roles.UpdateRoles:input_type -> api.roles.v1.UpdateRolesRequest
-	4,  // 3: api.roles.v1.Roles.DeleteRoles:input_type -> api.roles.v1.DeleteRolesRequest
-	6,  // 4: api.roles.v1.Roles.GetRoles:input_type -> api.roles.v1.GetRolesRequest
-	8,  // 5: api.roles.v1.Roles.ListRoles:input_type -> api.roles.v1.ListRolesRequest
-	1,  // 6: api.roles.v1.Roles.CreateRoles:output_type -> api.roles.v1.CreateRolesReply
-	3,  // 7: api.roles.v1.Roles.UpdateRoles:output_type -> api.roles.v1.UpdateRolesReply
-	5,  // 8: api.roles.v1.Roles.DeleteRoles:output_type -> api.roles.v1.DeleteRolesReply
-	7,  // 9: api.roles.v1.Roles.GetRoles:output_type -> api.roles.v1.GetRolesReply
-	9,  // 10: api.roles.v1.Roles.ListRoles:output_type -> api.roles.v1.ListRolesReply
+	10, // 0: api.base.v1.GetRolesReply.data:type_name -> api.base.v1.RolesMessage
+	0,  // 1: api.base.v1.Roles.CreateRoles:input_type -> api.base.v1.CreateRolesRequest
+	2,  // 2: api.base.v1.Roles.UpdateRoles:input_type -> api.base.v1.UpdateRolesRequest
+	4,  // 3: api.base.v1.Roles.DeleteRoles:input_type -> api.base.v1.DeleteRolesRequest
+	6,  // 4: api.base.v1.Roles.GetRoles:input_type -> api.base.v1.GetRolesRequest
+	8,  // 5: api.base.v1.Roles.ListRoles:input_type -> api.base.v1.ListRolesRequest
+	1,  // 6: api.base.v1.Roles.CreateRoles:output_type -> api.base.v1.CreateRolesReply
+	3,  // 7: api.base.v1.Roles.UpdateRoles:output_type -> api.base.v1.UpdateRolesReply
+	5,  // 8: api.base.v1.Roles.DeleteRoles:output_type -> api.base.v1.DeleteRolesReply
+	7,  // 9: api.base.v1.Roles.GetRoles:output_type -> api.base.v1.GetRolesReply
+	9,  // 10: api.base.v1.Roles.ListRoles:output_type -> api.base.v1.ListRolesReply
 	6,  // [6:11] is the sub-list for method output_type
 	1,  // [1:6] is the sub-list for method input_type
 	1,  // [1:1] is the sub-list for extension type_name

@@ -11,13 +11,13 @@ option java_package = "api.base.v1";
 service Roles {
 	rpc CreateRoles (CreateRolesRequest) returns (CreateRolesReply){
 		option(google.api.http) = {
-			post: "/api/v1/base/roles",
+			post: "/api/v1/base/base",
 			body: "*",
 		};
 	};
 	rpc UpdateRoles (UpdateRolesRequest) returns (UpdateRolesReply){
 		option(google.api.http) = {
-			patch: "/api/v1/base/roles",
+			patch: "/api/v1/base/base",
 			body: "*",
 		};
 	};
@@ -25,7 +25,7 @@ service Roles {
 	rpc DeleteRoles (DeleteRolesRequest) returns (DeleteRolesReply);
 	rpc GetRoles (GetRolesRequest) returns (GetRolesReply){
 		option(google.api.http) = {
-			get: "/api/v1/base/roles",
+			get: "/api/v1/base/base",
 		};
 	};
 	rpc ListRoles (ListRolesRequest) returns (ListRolesReply);
@@ -67,19 +67,18 @@ message ListRolesRequest {}
 message ListRolesReply {}
 
 message RolesMessage {
-	string achievements = 1;               // 成就
 	string action_designation = 2;         // 激活称号，玩家激活称号
 	repeated int64 assets = 3;             // 封地，玩家封地，资产
 	string avatar = 4;                     // 头像
-	string city_nums = 5;                  // 城池数量
+	int64 city_nums = 5;                   // 城池数量
 	int64 consumption = 6;                 // 会员值，用户消费了多少充值，比如在会员6 - 会员7之间
-	string contribution = 7;               // 贡献
+	int64 contribution = 7;                // 贡献
 	string country = 8;                    // 国家，玩家所在国家
-	string exp = 9;                        // 经验值
-	string grade = 10;                     // 等级
+	int64 exp = 9;                         // 经验值
+	int64 grade = 10;                      // 等级
 	string intro = 11;                     // 简介
 	int64 member = 12;                     // 会员
-	string military_exploit = 13;          // 军功，通过战场获得
+	int64 military_exploit = 13;           // 军功，通过战场获得
 	string name = 14;                      // 角色名
 	int64 points = 15;                     // 消费积分
 	string status = 16;                    // 状态

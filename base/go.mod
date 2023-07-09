@@ -1,4 +1,4 @@
-module roles
+module base
 
 go 1.18
 

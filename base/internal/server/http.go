@@ -1,26 +1,27 @@
 package server
 
 import (
+	v1 "base/api/district/v1"
+	roles "base/api/roles/v1"
+	"base/internal/conf"
+	"base/internal/service"
+	"base/pkg"
 	"fmt"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/transport"
 	"google.golang.org/grpc/metadata"
-	v1 "roles/api/district/v1"
-	"roles/internal/conf"
-	"roles/internal/service"
-	"roles/pkg"
 
+	pb "base/api/auth/v1"
 	"context"
 	"errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"google.golang.org/grpc"
-	pb "roles/api/auth/v1"
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.DistrictService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, greeter *service.DistrictService, logger log.Logger, rolesService *service.RolesService) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -90,5 +91,6 @@ func NewHTTPServer(c *conf.Server, greeter *service.DistrictService, logger log.
 
 	srv := http.NewServer(opts...)
 	v1.RegisterDistrictHTTPServer(srv, greeter)
+	roles.RegisterRolesHTTPServer(srv, rolesService)
 	return srv
 }

@@ -1,10 +1,10 @@
 package service
 
 import (
+	"base/internal/biz"
 	"context"
-	"roles/internal/biz"
 
-	pb "roles/api/district/v1"
+	pb "base/api/district/v1"
 )
 
 type DistrictService struct {

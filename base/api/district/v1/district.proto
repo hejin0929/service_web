@@ -53,4 +53,5 @@ message  DistrictData {
 	string close_time = 4;
 	string id = 5;
 	string type = 6;
+	string role_id = 7;
 }

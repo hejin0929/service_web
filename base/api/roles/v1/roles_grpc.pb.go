@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.21.12
-// source: roles/v1/roles.proto
+// source: base/v1/base.proto
 
 package v1
 
@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Roles_CreateRoles_FullMethodName = "/api.roles.v1.Roles/CreateRoles"
-	Roles_UpdateRoles_FullMethodName = "/api.roles.v1.Roles/UpdateRoles"
-	Roles_DeleteRoles_FullMethodName = "/api.roles.v1.Roles/DeleteRoles"
-	Roles_GetRoles_FullMethodName    = "/api.roles.v1.Roles/GetRoles"
-	Roles_ListRoles_FullMethodName   = "/api.roles.v1.Roles/ListRoles"
+	Roles_CreateRoles_FullMethodName = "/api.base.v1.Roles/CreateRoles"
+	Roles_UpdateRoles_FullMethodName = "/api.base.v1.Roles/UpdateRoles"
+	Roles_DeleteRoles_FullMethodName = "/api.base.v1.Roles/DeleteRoles"
+	Roles_GetRoles_FullMethodName    = "/api.base.v1.Roles/GetRoles"
+	Roles_ListRoles_FullMethodName   = "/api.base.v1.Roles/ListRoles"
 )
 
 // RolesClient is the client API for Roles service.
@@ -228,7 +228,7 @@ func _Roles_ListRoles_Handler(srv interface{}, ctx context.Context, dec func(int
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Roles_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.roles.v1.Roles",
+	ServiceName: "api.base.v1.Roles",
 	HandlerType: (*RolesServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -253,5 +253,5 @@ var Roles_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "roles/v1/roles.proto",
+	Metadata: "base/v1/base.proto",
 }

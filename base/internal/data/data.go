@@ -1,19 +1,19 @@
 package data
 
 import (
+	"base/internal/conf"
 	"github.com/dtm-labs/rockscache"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"roles/internal/conf"
 	"time"
 )
 
 // ProviderSet is data providers.
 // Notice data层需要初始化的Mysql、Redis等资源直接放在这里即可，wire的时候会生成初始化代码
-var ProviderSet = wire.NewSet(NewData, NewMysql, NewRedis, NewRocksCache, NewDistrictRepo)
+var ProviderSet = wire.NewSet(NewData, NewMysql, NewRedis, NewRocksCache, NewDistrictRepo, NewRolesRepo)
 
 // Data .
 type Data struct {
