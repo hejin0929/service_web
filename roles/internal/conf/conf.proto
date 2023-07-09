@@ -1,13 +1,19 @@
 syntax = "proto3";
 package kratos.api;
 
-option go_package = "roles/internal/conf;conf";
+option go_package = "users/internal/conf;conf";
 
 import "google/protobuf/duration.proto";
 
+// Notice: 改完之后记得在根目录执行：make config
+
+// Notice 1 外层变量名
 message Bootstrap {
   Server server = 1;
   Data data = 2;
+  Discovery discovery = 3;
+  Trace trace = 4;
+  Registry registry = 5;
 }
 
 message Server {
@@ -21,21 +27,61 @@ message Server {
     string addr = 2;
     google.protobuf.Duration timeout = 3;
   }
+  // Notice 2 内层变量名
   HTTP http = 1;
   GRPC grpc = 2;
+  string name = 3;
+  string environment = 4;
+  string version = 5;
 }
 
 message Data {
   message Database {
     string driver = 1;
     string source = 2;
+    int32 min_idle_conns = 3;
+    int32 max_open_conns = 4;
+    int32 con_max_left_time = 5;
+    string databases = 6;
   }
   message Redis {
     string network = 1;
     string addr = 2;
     google.protobuf.Duration read_timeout = 3;
     google.protobuf.Duration write_timeout = 4;
+    int32 db = 5;
+    int32 pool_size = 6;
+    int32 min_idle_conns = 7;
+    int32 max_retries = 8;
   }
+  // Notice 3 内层变量名
   Database database = 1;
   Redis redis = 2;
+}
+
+
+message Registry {
+  message Consul {
+    string addr = 1;
+    string schema = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  Consul consul = 1;
+}
+
+message Discovery {
+  message Consul {
+    string addr = 1;
+    string schema = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  Consul consul = 1;
+}
+
+message Trace{
+  string  endpoint = 1;
+  string  trace_file_path = 2;
+  string  exporter = 3;
+  bool   enable = 4;
+  string token = 5;
 }

@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package api.district.v1;
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "roles/api/district/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.district.v1";
+
+service District {
+	rpc CreateDistrict (CreateDistrictRequest) returns (CreateDistrictReply);
+	rpc UpdateDistrict (UpdateDistrictRequest) returns (UpdateDistrictReply){
+		option (google.api.http) = {
+			patch: "/api/v1/roles/district",
+			body: "*",
+		};
+	};
+	rpc DeleteDistrict (DeleteDistrictRequest) returns (DeleteDistrictReply);
+	rpc GetDistrict (GetDistrictRequest) returns (GetDistrictReply){
+		option (google.api.http) = {
+			get: "/api/v1/roles/district",
+		};
+	};
+}
+
+message CreateDistrictRequest {}
+message CreateDistrictReply {}
+
+message UpdateDistrictRequest {
+	string id = 1 [(validate.rules).string.min_len = 1];
+}
+message UpdateDistrictReply {
+	bool success = 1;
+	string message = 2;
+}
+
+message DeleteDistrictRequest {}
+message DeleteDistrictReply {}
+
+message GetDistrictRequest {}
+message GetDistrictReply {
+	bool success = 1;
+	string message = 2;
+	repeated DistrictData lists = 3;
+}
+
+
+message  DistrictData {
+	string name = 1;
+	string status = 2;
+	string open_time = 3;
+	string close_time = 4;
+	string id = 5;
+	string type = 6;
+}

@@ -12,7 +12,7 @@ server:
 data:
   database:
     driver: mysql
-    source: "root:ks123456@tcp(127.0.0.1:3306)/data?charset=utf8mb4&parseTime=True&loc=Local" # 本地数据库
+    source: "root:hejin0929@tcp(127.0.0.1:3306)/data?charset=utf8mb4&parseTime=True&loc=Local" # 本地数据库
     min_idle_conns: 10
     max_open_conns: 100
     con_max_left_time: 1

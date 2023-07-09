@@ -2,27 +2,31 @@ package service
 
 import (
 	"context"
+	"users/internal/biz"
 
 	pb "users/api/auth/v1"
 )
 
 type AuthService struct {
-	pb.UnimplementedUsersServer
+	pb.UnimplementedAuthServer
+	repo *biz.AuthUse
 }
 
-func NewAuthService() *UsersService {
-	return &UsersService{}
+func NewAuthService(repo *biz.AuthUse) *AuthService {
+	return &AuthService{
+		repo: repo,
+	}
 }
 
-func (s *UsersService) LoginUsers(ctx context.Context, req *pb.LoginUsersRequest) (*pb.LoginUsersReply, error) {
-	return &pb.LoginUsersReply{}, nil
+func (s *AuthService) LoginUsers(ctx context.Context, req *pb.LoginUsersRequest) (*pb.LoginUsersReply, error) {
+	return s.repo.LoginUsers(ctx, req)
 }
-func (s *UsersService) ExitUsersLogin(ctx context.Context, req *pb.ExitUsersLoginRequest) (*pb.ExitUsersLoginReply, error) {
+func (s *AuthService) ExitUsersLogin(ctx context.Context, req *pb.ExitUsersLoginRequest) (*pb.ExitUsersLoginReply, error) {
 	return &pb.ExitUsersLoginReply{}, nil
 }
-func (s *UsersService) PatchUsersLogin(ctx context.Context, req *pb.PatchUsersLoginRequest) (*pb.PatchUsersLoginReply, error) {
+func (s *AuthService) PatchUsersLogin(ctx context.Context, req *pb.PatchUsersLoginRequest) (*pb.PatchUsersLoginReply, error) {
 	return &pb.PatchUsersLoginReply{}, nil
 }
-func (s *UsersService) AuthLogin(ctx context.Context, req *pb.AuthLoginRequest) (*pb.AuthLoginReply, error) {
-	return &pb.AuthLoginReply{}, nil
+func (s *AuthService) AuthLogin(ctx context.Context, req *pb.AuthLoginRequest) (*pb.AuthLoginReply, error) {
+	return s.repo.AuthLogin(ctx, req)
 }

@@ -8,7 +8,7 @@ option go_package = "users/api/auth/v1;v1";
 option java_multiple_files = true;
 option java_package = "api.v1";
 
-service Users {
+service Auth {
 
 	rpc LoginUsers (LoginUsersRequest) returns (LoginUsersReply) {
 		option (google.api.http) = {

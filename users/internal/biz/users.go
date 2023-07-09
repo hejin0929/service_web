@@ -3,22 +3,13 @@ package biz
 import (
 	"context"
 	"fmt"
-	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"strconv"
-	pb2 "users/api/auth/v1"
 	pb "users/api/users/v1"
 	"users/pkg"
 )
-
-// UsersBiz 用户相关逻辑
-type UsersBiz struct {
-	repo UsersRepo
-	log  *log.Helper
-}
 
 type Users struct {
 	gorm.Model
@@ -45,6 +36,7 @@ type UsersRepo interface {
 	CreateUser(ctx context.Context, usersType *Users) error
 	GetUser(ctx context.Context, name string, value interface{}) (*Users, error)
 	SaveToken(ctx context.Context, id string, token string) error
+	GetToken(ctx context.Context, id string) (token string, err error)
 }
 
 type UsersUse struct {
@@ -98,33 +90,5 @@ func (r *UsersUse) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (res *
 	res.Message = "获取成功"
 	res.Data = new(pb.GetUsersData)
 	err = pkg.CopyTo(user, &res.Data)
-	return
-}
-
-func (r *UsersUse) LoginUsers(ctx context.Context, req *pb.LoginUsersRequest) (res *pb2.LoginUsersReply, err error) {
-
-	user, err := r.repo.GetUser(ctx, "account", req.Account)
-
-	res = new(pb2.LoginUsersReply)
-	res.Data = new(pb2.LoginData)
-
-	if user.ID == 0 {
-		res.Success = false
-		res.Message = "暂无该用户信息"
-		err = errors.New(500, "USER_NOT_FOUND", "account nonentity")
-		return
-	}
-
-	if user.Password != req.Password {
-		res.Success = false
-		res.Message = "用户密码错误"
-		return
-	}
-
-	res.Success = true
-	res.Message = "登陆成功"
-	res.Data.Uid = user.UID
-	res.Data.Token, err = pkg.GenerateToken(strconv.Itoa(int(user.ID)), user.Account)
-	err = r.repo.SaveToken(ctx, strconv.Itoa(int(user.ID)), res.Data.Token)
 	return
 }

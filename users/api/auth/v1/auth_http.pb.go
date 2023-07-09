@@ -8,6 +8,7 @@ package v1
 
 import (
 	context "context"
+	"fmt"
 	http "github.com/go-kratos/kratos/v2/transport/http"
 	binding "github.com/go-kratos/kratos/v2/transport/http/binding"
 )
@@ -19,31 +20,33 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationUsersExitUsersLogin = "/api.auth.v1.Users/ExitUsersLogin"
-const OperationUsersLoginUsers = "/api.auth.v1.Users/LoginUsers"
-const OperationUsersPatchUsersLogin = "/api.auth.v1.Users/PatchUsersLogin"
+const OperationAuthExitUsersLogin = "/api.auth.v1.Auth/ExitUsersLogin"
+const OperationAuthLoginUsers = "/api.auth.v1.Auth/LoginUsers"
+const OperationAuthPatchUsersLogin = "/api.auth.v1.Auth/PatchUsersLogin"
 
-type UsersHTTPServer interface {
+type AuthHTTPServer interface {
 	ExitUsersLogin(context.Context, *ExitUsersLoginRequest) (*ExitUsersLoginReply, error)
 	LoginUsers(context.Context, *LoginUsersRequest) (*LoginUsersReply, error)
 	PatchUsersLogin(context.Context, *PatchUsersLoginRequest) (*PatchUsersLoginReply, error)
 }
 
-func RegisterUsersHTTPServer(s *http.Server, srv UsersHTTPServer) {
+func RegisterAuthHTTPServer(s *http.Server, srv AuthHTTPServer) {
 	r := s.Route("/")
-	r.POST("/api/v1/login", _Users_LoginUsers0_HTTP_Handler(srv))
-	r.DELETE("/api/v1/login", _Users_ExitUsersLogin0_HTTP_Handler(srv))
-	r.PATCH("/api/v1/login", _Users_PatchUsersLogin0_HTTP_Handler(srv))
+	r.POST("/api/v1/login", _Auth_LoginUsers0_HTTP_Handler(srv))
+	r.DELETE("/api/v1/login", _Auth_ExitUsersLogin0_HTTP_Handler(srv))
+	r.PATCH("/api/v1/login", _Auth_PatchUsersLogin0_HTTP_Handler(srv))
 }
 
-func _Users_LoginUsers0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Context) error {
+func _Auth_LoginUsers0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in LoginUsersRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationUsersLoginUsers)
+		http.SetOperation(ctx, OperationAuthLoginUsers)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			srv.LoginUsers(ctx, req.(*LoginUsersRequest))
+
 			return srv.LoginUsers(ctx, req.(*LoginUsersRequest))
 		})
 		out, err := h(ctx, &in)
@@ -55,13 +58,13 @@ func _Users_LoginUsers0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Context)
 	}
 }
 
-func _Users_ExitUsersLogin0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Context) error {
+func _Auth_ExitUsersLogin0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in ExitUsersLoginRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationUsersExitUsersLogin)
+		http.SetOperation(ctx, OperationAuthExitUsersLogin)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.ExitUsersLogin(ctx, req.(*ExitUsersLoginRequest))
 		})
@@ -74,13 +77,13 @@ func _Users_ExitUsersLogin0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Cont
 	}
 }
 
-func _Users_PatchUsersLogin0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Context) error {
+func _Auth_PatchUsersLogin0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in PatchUsersLoginRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationUsersPatchUsersLogin)
+		http.SetOperation(ctx, OperationAuthPatchUsersLogin)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.PatchUsersLogin(ctx, req.(*PatchUsersLoginRequest))
 		})
@@ -93,25 +96,25 @@ func _Users_PatchUsersLogin0_HTTP_Handler(srv UsersHTTPServer) func(ctx http.Con
 	}
 }
 
-type UsersHTTPClient interface {
+type AuthHTTPClient interface {
 	ExitUsersLogin(ctx context.Context, req *ExitUsersLoginRequest, opts ...http.CallOption) (rsp *ExitUsersLoginReply, err error)
 	LoginUsers(ctx context.Context, req *LoginUsersRequest, opts ...http.CallOption) (rsp *LoginUsersReply, err error)
 	PatchUsersLogin(ctx context.Context, req *PatchUsersLoginRequest, opts ...http.CallOption) (rsp *PatchUsersLoginReply, err error)
 }
 
-type UsersHTTPClientImpl struct {
+type AuthHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewUsersHTTPClient(client *http.Client) UsersHTTPClient {
-	return &UsersHTTPClientImpl{client}
+func NewAuthHTTPClient(client *http.Client) AuthHTTPClient {
+	return &AuthHTTPClientImpl{client}
 }
 
-func (c *UsersHTTPClientImpl) ExitUsersLogin(ctx context.Context, in *ExitUsersLoginRequest, opts ...http.CallOption) (*ExitUsersLoginReply, error) {
+func (c *AuthHTTPClientImpl) ExitUsersLogin(ctx context.Context, in *ExitUsersLoginRequest, opts ...http.CallOption) (*ExitUsersLoginReply, error) {
 	var out ExitUsersLoginReply
 	pattern := "/api/v1/login"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationUsersExitUsersLogin))
+	opts = append(opts, http.Operation(OperationAuthExitUsersLogin))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
 	if err != nil {
@@ -120,11 +123,12 @@ func (c *UsersHTTPClientImpl) ExitUsersLogin(ctx context.Context, in *ExitUsersL
 	return &out, err
 }
 
-func (c *UsersHTTPClientImpl) LoginUsers(ctx context.Context, in *LoginUsersRequest, opts ...http.CallOption) (*LoginUsersReply, error) {
+func (c *AuthHTTPClientImpl) LoginUsers(ctx context.Context, in *LoginUsersRequest, opts ...http.CallOption) (*LoginUsersReply, error) {
+	fmt.Println("this is a update >?>??B ")
 	var out LoginUsersReply
 	pattern := "/api/v1/login"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationUsersLoginUsers))
+	opts = append(opts, http.Operation(OperationAuthLoginUsers))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -133,11 +137,11 @@ func (c *UsersHTTPClientImpl) LoginUsers(ctx context.Context, in *LoginUsersRequ
 	return &out, err
 }
 
-func (c *UsersHTTPClientImpl) PatchUsersLogin(ctx context.Context, in *PatchUsersLoginRequest, opts ...http.CallOption) (*PatchUsersLoginReply, error) {
+func (c *AuthHTTPClientImpl) PatchUsersLogin(ctx context.Context, in *PatchUsersLoginRequest, opts ...http.CallOption) (*PatchUsersLoginReply, error) {
 	var out PatchUsersLoginReply
 	pattern := "/api/v1/login"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationUsersPatchUsersLogin))
+	opts = append(opts, http.Operation(OperationAuthPatchUsersLogin))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "PATCH", path, in, &out, opts...)
 	if err != nil {

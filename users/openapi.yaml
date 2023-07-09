@@ -3,8 +3,279 @@
 
 openapi: 3.0.3
 info:
-    title: ""
+    title: Users API
     version: 0.0.1
-paths: {}
+paths:
+    /api/v1/users:
+        get:
+            tags:
+                - Users
+            operationId: Users_GetUsers
+            parameters:
+                - name: uuid
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetUsersReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        post:
+            tags:
+                - Users
+            operationId: Users_CreateUsers
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateUsersRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateUsersReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        delete:
+            tags:
+                - Users
+            operationId: Users_DeleteUsers
+            parameters:
+                - name: uuid
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteUsersReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        patch:
+            tags:
+                - Users
+            operationId: Users_UpdateUsers
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateUsersRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateUsersReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v1/users/list:
+        post:
+            tags:
+                - Users
+            operationId: Users_ListUsers
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ListUsersRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListUsersReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v1/users/update:
+        patch:
+            tags:
+                - Users
+            operationId: Users_PatchPassword
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchPasswordRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PatchPasswordReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
 components:
-    schemas: {}
+    schemas:
+        CreateUsersReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        CreateUsersRequest:
+            type: object
+            properties:
+                account:
+                    type: string
+                phone:
+                    type: string
+                name:
+                    type: string
+                password:
+                    type: string
+                age:
+                    type: integer
+                    format: int32
+                sex:
+                    type: integer
+                    format: enum
+                email:
+                    type: string
+                school:
+                    type: string
+                address:
+                    type: string
+                cardId:
+                    type: string
+                cardName:
+                    type: string
+        DeleteUsersReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                msg:
+                    type: string
+        GetUsersData:
+            type: object
+            properties:
+                name:
+                    type: string
+                age:
+                    type: integer
+                    format: int32
+                phone:
+                    type: string
+                sex:
+                    type: integer
+                    format: int32
+                account:
+                    type: string
+                email:
+                    type: string
+                address:
+                    type: string
+                avatar:
+                    type: string
+                status:
+                    type: integer
+                    format: int32
+                uid:
+                    type: string
+                school:
+                    type: string
+        GetUsersReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/GetUsersData'
+        GoogleProtobufAny:
+            type: object
+            properties:
+                '@type':
+                    type: string
+                    description: The type of the serialized message.
+            additionalProperties: true
+            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        ListUsersReply:
+            type: object
+            properties: {}
+        ListUsersRequest:
+            type: object
+            properties: {}
+        PatchPasswordReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        PatchPasswordRequest:
+            type: object
+            properties:
+                account:
+                    type: string
+                password:
+                    type: string
+                oldPassword:
+                    type: string
+        Status:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+                    format: int32
+                message:
+                    type: string
+                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GoogleProtobufAny'
+                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
+            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
+        UpdateUsersReply:
+            type: object
+            properties: {}
+        UpdateUsersRequest:
+            type: object
+            properties: {}
+tags:
+    - name: Users

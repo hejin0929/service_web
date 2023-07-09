@@ -10,7 +10,11 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"os"
+	authV1 "users/api/auth/v1"
+	pb "users/api/auth/v1"
 	v1 "users/api/users/v1"
 	"users/internal/conf"
 	"users/internal/service"
@@ -18,7 +22,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.UsersService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, greeter *service.UsersService, logger log.Logger, authService *service.AuthService) *http.Server {
 	var (
 		opts = []http.ServerOption{
 			http.Middleware(
@@ -40,17 +44,34 @@ func NewHTTPServer(c *conf.Server, greeter *service.UsersService, logger log.Log
 	opts = append(opts, http.Middleware(func(handler middleware.Handler) middleware.Handler {
 		return func(ctx context.Context, req interface{}) (interface{}, error) {
 			if cc, ok := transport.FromServerContext(ctx); ok {
-				if cc.Operation() == "/api.v1.Users/LoginUsers" || cc.Operation() == "/api.v1.Users/CreateUsers" {
+				if cc.Operation() == "/api.auth.v1.Auth/LoginUsers" || cc.Operation() == "/api.users.v1.Users/CreateUsers" {
 					return handler(ctx, req)
 				}
-				session := cc.RequestHeader().Get("session")
-
-				fmt.Println("this is a value ?? ", session)
-
 				token := cc.RequestHeader().Get("Authorization")
+
+				conn, err := grpc.Dial("localhost:9001", grpc.WithInsecure())
+
+				ctx2 := metadata.AppendToOutgoingContext(context.Background(), "Authorization", token)
+
+				if err != nil {
+					log.Fatalf("failed to connect: %v", err)
+				}
+
+				defer conn.Close()
+
+				client := pb.NewAuthClient(conn)
+
+				req2 := pb.AuthLoginRequest{Token: token}
+
+				_, err = client.AuthLogin(ctx2, &req2)
+				if err != nil {
+					return nil, fmt.Errorf("failed to call YourMethod: %v", err)
+				}
+
 				if token == "" {
 					return nil, errors.New("error：token deletion")
 				}
+
 				data, err := pkg.ParseToken(token, "password-hello-word")
 
 				if err != nil {
@@ -89,7 +110,8 @@ func NewHTTPServer(c *conf.Server, greeter *service.UsersService, logger log.Log
 
 		return err
 	})
-
 	v1.RegisterUsersHTTPServer(srv, greeter)
+	authV1.RegisterAuthHTTPServer(srv, authService)
+
 	return srv
 }

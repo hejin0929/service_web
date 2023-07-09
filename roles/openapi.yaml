@@ -3,21 +3,34 @@
 
 openapi: 3.0.3
 info:
-    title: Greeter API
-    description: The greeting service definition.
+    title: ""
     version: 0.0.1
 paths:
-    /helloworld/{name}:
-        get:
+    /api/v1/login:
+        post:
             tags:
-                - Greeter
-                - subgroup
-            description: Sends a greeting
-            operationId: Greeter_SayHello
+                - Auth
+            operationId: Auth_LoginUsers
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.auth.v1.LoginUsersRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.LoginUsersReply'
+        delete:
+            tags:
+                - Auth
+            operationId: Auth_ExitUsersLogin
             parameters:
-                - name: name
-                  in: path
-                  required: true
+                - name: uid
+                  in: query
                   schema:
                     type: string
             responses:
@@ -26,14 +39,137 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/helloworld.v1.HelloReply'
+                                $ref: '#/components/schemas/api.auth.v1.ExitUsersLoginReply'
+        patch:
+            tags:
+                - Auth
+            operationId: Auth_PatchUsersLogin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.auth.v1.PatchUsersLoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.PatchUsersLoginReply'
+    /api/v1/roles/district:
+        get:
+            tags:
+                - District
+            operationId: District_GetDistrict
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.district.v1.GetDistrictReply'
+        patch:
+            tags:
+                - District
+            operationId: District_UpdateDistrict
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.district.v1.UpdateDistrictRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.district.v1.UpdateDistrictReply'
 components:
     schemas:
-        helloworld.v1.HelloReply:
+        api.auth.v1.ExitUsersLoginReply:
             type: object
             properties:
+                success:
+                    type: boolean
                 message:
                     type: string
-            description: The response message containing the greetings
+        api.auth.v1.LoginData:
+            type: object
+            properties:
+                token:
+                    type: string
+                refreshToken:
+                    type: string
+                uid:
+                    type: string
+        api.auth.v1.LoginUsersReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/api.auth.v1.LoginData'
+        api.auth.v1.LoginUsersRequest:
+            type: object
+            properties:
+                account:
+                    type: string
+                password:
+                    type: string
+        api.auth.v1.PatchUsersLoginReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        api.auth.v1.PatchUsersLoginRequest:
+            type: object
+            properties:
+                refreshToken:
+                    type: string
+        api.district.v1.DistrictData:
+            type: object
+            properties:
+                name:
+                    type: string
+                status:
+                    type: string
+                openTime:
+                    type: string
+                closeTime:
+                    type: string
+                id:
+                    type: string
+                type:
+                    type: string
+        api.district.v1.GetDistrictReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+                lists:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.district.v1.DistrictData'
+        api.district.v1.UpdateDistrictReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        api.district.v1.UpdateDistrictRequest:
+            type: object
+            properties:
+                id:
+                    type: string
 tags:
-    - name: Greeter
+    - name: Auth
+    - name: District

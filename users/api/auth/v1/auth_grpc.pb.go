@@ -19,200 +19,200 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Users_LoginUsers_FullMethodName      = "/api.auth.v1.Users/LoginUsers"
-	Users_ExitUsersLogin_FullMethodName  = "/api.auth.v1.Users/ExitUsersLogin"
-	Users_PatchUsersLogin_FullMethodName = "/api.auth.v1.Users/PatchUsersLogin"
-	Users_AuthLogin_FullMethodName       = "/api.auth.v1.Users/AuthLogin"
+	Auth_LoginUsers_FullMethodName      = "/api.auth.v1.Auth/LoginUsers"
+	Auth_ExitUsersLogin_FullMethodName  = "/api.auth.v1.Auth/ExitUsersLogin"
+	Auth_PatchUsersLogin_FullMethodName = "/api.auth.v1.Auth/PatchUsersLogin"
+	Auth_AuthLogin_FullMethodName       = "/api.auth.v1.Auth/AuthLogin"
 )
 
-// UsersClient is the client API for Users service.
+// AuthClient is the client API for Auth service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type UsersClient interface {
+type AuthClient interface {
 	LoginUsers(ctx context.Context, in *LoginUsersRequest, opts ...grpc.CallOption) (*LoginUsersReply, error)
 	ExitUsersLogin(ctx context.Context, in *ExitUsersLoginRequest, opts ...grpc.CallOption) (*ExitUsersLoginReply, error)
 	PatchUsersLogin(ctx context.Context, in *PatchUsersLoginRequest, opts ...grpc.CallOption) (*PatchUsersLoginReply, error)
 	AuthLogin(ctx context.Context, in *AuthLoginRequest, opts ...grpc.CallOption) (*AuthLoginReply, error)
 }
 
-type usersClient struct {
+type authClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewUsersClient(cc grpc.ClientConnInterface) UsersClient {
-	return &usersClient{cc}
+func NewAuthClient(cc grpc.ClientConnInterface) AuthClient {
+	return &authClient{cc}
 }
 
-func (c *usersClient) LoginUsers(ctx context.Context, in *LoginUsersRequest, opts ...grpc.CallOption) (*LoginUsersReply, error) {
+func (c *authClient) LoginUsers(ctx context.Context, in *LoginUsersRequest, opts ...grpc.CallOption) (*LoginUsersReply, error) {
 	out := new(LoginUsersReply)
-	err := c.cc.Invoke(ctx, Users_LoginUsers_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Auth_LoginUsers_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *usersClient) ExitUsersLogin(ctx context.Context, in *ExitUsersLoginRequest, opts ...grpc.CallOption) (*ExitUsersLoginReply, error) {
+func (c *authClient) ExitUsersLogin(ctx context.Context, in *ExitUsersLoginRequest, opts ...grpc.CallOption) (*ExitUsersLoginReply, error) {
 	out := new(ExitUsersLoginReply)
-	err := c.cc.Invoke(ctx, Users_ExitUsersLogin_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Auth_ExitUsersLogin_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *usersClient) PatchUsersLogin(ctx context.Context, in *PatchUsersLoginRequest, opts ...grpc.CallOption) (*PatchUsersLoginReply, error) {
+func (c *authClient) PatchUsersLogin(ctx context.Context, in *PatchUsersLoginRequest, opts ...grpc.CallOption) (*PatchUsersLoginReply, error) {
 	out := new(PatchUsersLoginReply)
-	err := c.cc.Invoke(ctx, Users_PatchUsersLogin_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Auth_PatchUsersLogin_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *usersClient) AuthLogin(ctx context.Context, in *AuthLoginRequest, opts ...grpc.CallOption) (*AuthLoginReply, error) {
+func (c *authClient) AuthLogin(ctx context.Context, in *AuthLoginRequest, opts ...grpc.CallOption) (*AuthLoginReply, error) {
 	out := new(AuthLoginReply)
-	err := c.cc.Invoke(ctx, Users_AuthLogin_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Auth_AuthLogin_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// UsersServer is the server API for Users service.
-// All implementations must embed UnimplementedUsersServer
+// AuthServer is the server API for Auth service.
+// All implementations must embed UnimplementedAuthServer
 // for forward compatibility
-type UsersServer interface {
+type AuthServer interface {
 	LoginUsers(context.Context, *LoginUsersRequest) (*LoginUsersReply, error)
 	ExitUsersLogin(context.Context, *ExitUsersLoginRequest) (*ExitUsersLoginReply, error)
 	PatchUsersLogin(context.Context, *PatchUsersLoginRequest) (*PatchUsersLoginReply, error)
 	AuthLogin(context.Context, *AuthLoginRequest) (*AuthLoginReply, error)
-	mustEmbedUnimplementedUsersServer()
+	mustEmbedUnimplementedAuthServer()
 }
 
-// UnimplementedUsersServer must be embedded to have forward compatible implementations.
-type UnimplementedUsersServer struct {
+// UnimplementedAuthServer must be embedded to have forward compatible implementations.
+type UnimplementedAuthServer struct {
 }
 
-func (UnimplementedUsersServer) LoginUsers(context.Context, *LoginUsersRequest) (*LoginUsersReply, error) {
+func (UnimplementedAuthServer) LoginUsers(context.Context, *LoginUsersRequest) (*LoginUsersReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUsers not implemented")
 }
-func (UnimplementedUsersServer) ExitUsersLogin(context.Context, *ExitUsersLoginRequest) (*ExitUsersLoginReply, error) {
+func (UnimplementedAuthServer) ExitUsersLogin(context.Context, *ExitUsersLoginRequest) (*ExitUsersLoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExitUsersLogin not implemented")
 }
-func (UnimplementedUsersServer) PatchUsersLogin(context.Context, *PatchUsersLoginRequest) (*PatchUsersLoginReply, error) {
+func (UnimplementedAuthServer) PatchUsersLogin(context.Context, *PatchUsersLoginRequest) (*PatchUsersLoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PatchUsersLogin not implemented")
 }
-func (UnimplementedUsersServer) AuthLogin(context.Context, *AuthLoginRequest) (*AuthLoginReply, error) {
+func (UnimplementedAuthServer) AuthLogin(context.Context, *AuthLoginRequest) (*AuthLoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AuthLogin not implemented")
 }
-func (UnimplementedUsersServer) mustEmbedUnimplementedUsersServer() {}
+func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
 
-// UnsafeUsersServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to UsersServer will
+// UnsafeAuthServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AuthServer will
 // result in compilation errors.
-type UnsafeUsersServer interface {
-	mustEmbedUnimplementedUsersServer()
+type UnsafeAuthServer interface {
+	mustEmbedUnimplementedAuthServer()
 }
 
-func RegisterUsersServer(s grpc.ServiceRegistrar, srv UsersServer) {
-	s.RegisterService(&Users_ServiceDesc, srv)
+func RegisterAuthServer(s grpc.ServiceRegistrar, srv AuthServer) {
+	s.RegisterService(&Auth_ServiceDesc, srv)
 }
 
-func _Users_LoginUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Auth_LoginUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoginUsersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UsersServer).LoginUsers(ctx, in)
+		return srv.(AuthServer).LoginUsers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Users_LoginUsers_FullMethodName,
+		FullMethod: Auth_LoginUsers_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).LoginUsers(ctx, req.(*LoginUsersRequest))
+		return srv.(AuthServer).LoginUsers(ctx, req.(*LoginUsersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Users_ExitUsersLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Auth_ExitUsersLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ExitUsersLoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UsersServer).ExitUsersLogin(ctx, in)
+		return srv.(AuthServer).ExitUsersLogin(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Users_ExitUsersLogin_FullMethodName,
+		FullMethod: Auth_ExitUsersLogin_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).ExitUsersLogin(ctx, req.(*ExitUsersLoginRequest))
+		return srv.(AuthServer).ExitUsersLogin(ctx, req.(*ExitUsersLoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Users_PatchUsersLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Auth_PatchUsersLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PatchUsersLoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UsersServer).PatchUsersLogin(ctx, in)
+		return srv.(AuthServer).PatchUsersLogin(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Users_PatchUsersLogin_FullMethodName,
+		FullMethod: Auth_PatchUsersLogin_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).PatchUsersLogin(ctx, req.(*PatchUsersLoginRequest))
+		return srv.(AuthServer).PatchUsersLogin(ctx, req.(*PatchUsersLoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Users_AuthLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Auth_AuthLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AuthLoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UsersServer).AuthLogin(ctx, in)
+		return srv.(AuthServer).AuthLogin(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Users_AuthLogin_FullMethodName,
+		FullMethod: Auth_AuthLogin_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).AuthLogin(ctx, req.(*AuthLoginRequest))
+		return srv.(AuthServer).AuthLogin(ctx, req.(*AuthLoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Users_ServiceDesc is the grpc.ServiceDesc for Users service.
+// Auth_ServiceDesc is the grpc.ServiceDesc for Auth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Users_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.auth.v1.Users",
-	HandlerType: (*UsersServer)(nil),
+var Auth_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.auth.v1.Auth",
+	HandlerType: (*AuthServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "LoginUsers",
-			Handler:    _Users_LoginUsers_Handler,
+			Handler:    _Auth_LoginUsers_Handler,
 		},
 		{
 			MethodName: "ExitUsersLogin",
-			Handler:    _Users_ExitUsersLogin_Handler,
+			Handler:    _Auth_ExitUsersLogin_Handler,
 		},
 		{
 			MethodName: "PatchUsersLogin",
-			Handler:    _Users_PatchUsersLogin_Handler,
+			Handler:    _Auth_PatchUsersLogin_Handler,
 		},
 		{
 			MethodName: "AuthLogin",
-			Handler:    _Users_AuthLogin_Handler,
+			Handler:    _Auth_AuthLogin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

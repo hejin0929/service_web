@@ -25,15 +25,18 @@ func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	client := data.NewRedis(confData, logger)
 	rockscacheClient := data.NewRocksCache(confData, logger, client)
 	dataData, cleanup, err := data.NewData(confData, logger, db, client, rockscacheClient)
-
 	if err != nil {
 		return nil, nil, err
 	}
 	userRepo := data.NewUsersRepo(dataData, logger)
 	userUsecase := biz.NewUsersUse(userRepo, logger)
+	authUsecase := biz.NewAuthUse(userRepo, logger)
+
 	userService := service.NewUsersService(userUsecase)
-	grpcServer := server.NewGRPCServer(confServer, userService, logger)
-	httpServer := server.NewHTTPServer(confServer, userService, logger)
+	authService :=  service.NewAuthService(authUsecase)
+	httpServer := server.NewHTTPServer(confServer, userService, logger, authService)
+	grpcServer := server.NewGRPCServer(confServer, userService, logger, authService)
+
 	app := newApp(logger, grpcServer, httpServer)
 	return app, func() {
 		cleanup()
