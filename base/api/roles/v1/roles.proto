@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package api.roles.v1;
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "base/api/base/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.base.v1";
+
+service Roles {
+	rpc CreateRoles (CreateRolesRequest) returns (CreateRolesReply){
+		option(google.api.http) = {
+			post: "/api/v1/base/roles",
+			body: "*",
+		};
+	};
+	rpc UpdateRoles (UpdateRolesRequest) returns (UpdateRolesReply){
+		option(google.api.http) = {
+			patch: "/api/v1/base/roles",
+			body: "*",
+		};
+	};
+
+	rpc DeleteRoles (DeleteRolesRequest) returns (DeleteRolesReply);
+	rpc GetRoles (GetRolesRequest) returns (GetRolesReply){
+		option(google.api.http) = {
+			get: "/api/v1/base/roles",
+		};
+	};
+	rpc ListRoles (ListRolesRequest) returns (ListRolesReply);
+}
+
+message CreateRolesRequest {
+	string district_id = 1 [(validate.rules).string.min_len = 1];
+	string name = 2 [(validate.rules).string = {min_len: 2, max_len: 10}];
+	string sex = 3; // '1' 是男 '2' 是女
+	string avatar = 4;
+	string country = 5;
+}
+
+message CreateRolesReply {
+	bool success = 1;
+	string message = 2;
+}
+
+message UpdateRolesRequest {
+	string name = 1;
+	string district_id = 2;
+}
+message UpdateRolesReply {
+	bool success = 1;
+	string message = 2;
+}
+
+message DeleteRolesRequest {}
+message DeleteRolesReply {}
+
+message GetRolesRequest {}
+message GetRolesReply {
+	bool success = 1;
+	string message = 2;
+	RolesMessage data = 3;
+}
+
+message ListRolesRequest {}
+message ListRolesReply {}
+
+message RolesMessage {
+	string achievements = 1;               // 成就
+	string action_designation = 2;         // 激活称号，玩家激活称号
+	repeated int64 assets = 3;             // 封地，玩家封地，资产
+	string avatar = 4;                     // 头像
+	string city_nums = 5;                  // 城池数量
+	int64 consumption = 6;                 // 会员值，用户消费了多少充值，比如在会员6 - 会员7之间
+	string contribution = 7;               // 贡献
+	string country = 8;                    // 国家，玩家所在国家
+	string exp = 9;                        // 经验值
+	string grade = 10;                     // 等级
+	string intro = 11;                     // 简介
+	int64 member = 12;                     // 会员
+	string military_exploit = 13;          // 军功，通过战场获得
+	string name = 14;                      // 角色名
+	int64 points = 15;                     // 消费积分
+	string status = 16;                    // 状态
+	string team_name = 17;                 // 战队名称
+	string uid = 18;                       // 玩家ID
+}

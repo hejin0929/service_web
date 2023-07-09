@@ -1,0 +1,310 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: ""
+    version: 0.0.1
+paths:
+    /api/v1/base/district:
+        get:
+            tags:
+                - District
+            operationId: District_GetDistrict
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.district.v1.GetDistrictReply'
+        patch:
+            tags:
+                - District
+            operationId: District_UpdateDistrict
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.district.v1.UpdateDistrictRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.district.v1.UpdateDistrictReply'
+    /api/v1/base/roles:
+        get:
+            tags:
+                - Roles
+            operationId: Roles_GetRoles
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.roles.v1.GetRolesReply'
+        post:
+            tags:
+                - Roles
+            operationId: Roles_CreateRoles
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.roles.v1.CreateRolesRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.roles.v1.CreateRolesReply'
+        patch:
+            tags:
+                - Roles
+            operationId: Roles_UpdateRoles
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.roles.v1.UpdateRolesRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.roles.v1.UpdateRolesReply'
+    /api/v1/login:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_LoginUsers
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.auth.v1.LoginUsersRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.LoginUsersReply'
+        delete:
+            tags:
+                - Auth
+            operationId: Auth_ExitUsersLogin
+            parameters:
+                - name: uid
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.ExitUsersLoginReply'
+        patch:
+            tags:
+                - Auth
+            operationId: Auth_PatchUsersLogin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.auth.v1.PatchUsersLoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.PatchUsersLoginReply'
+components:
+    schemas:
+        api.auth.v1.ExitUsersLoginReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        api.auth.v1.LoginData:
+            type: object
+            properties:
+                token:
+                    type: string
+                refreshToken:
+                    type: string
+                uid:
+                    type: string
+        api.auth.v1.LoginUsersReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/api.auth.v1.LoginData'
+        api.auth.v1.LoginUsersRequest:
+            type: object
+            properties:
+                account:
+                    type: string
+                password:
+                    type: string
+        api.auth.v1.PatchUsersLoginReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        api.auth.v1.PatchUsersLoginRequest:
+            type: object
+            properties:
+                refreshToken:
+                    type: string
+        api.district.v1.DistrictData:
+            type: object
+            properties:
+                name:
+                    type: string
+                status:
+                    type: string
+                openTime:
+                    type: string
+                closeTime:
+                    type: string
+                id:
+                    type: string
+                type:
+                    type: string
+        api.district.v1.GetDistrictReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+                lists:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.district.v1.DistrictData'
+        api.district.v1.UpdateDistrictReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        api.district.v1.UpdateDistrictRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        api.roles.v1.CreateRolesReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        api.roles.v1.CreateRolesRequest:
+            type: object
+            properties:
+                districtId:
+                    type: string
+                name:
+                    type: string
+                sex:
+                    type: string
+                avatar:
+                    type: string
+                country:
+                    type: string
+        api.roles.v1.GetRolesReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/api.roles.v1.RolesMessage'
+        api.roles.v1.RolesMessage:
+            type: object
+            properties:
+                achievements:
+                    type: string
+                actionDesignation:
+                    type: string
+                assets:
+                    type: array
+                    items:
+                        type: integer
+                        format: int64
+                avatar:
+                    type: string
+                cityNums:
+                    type: string
+                consumption:
+                    type: integer
+                    format: int64
+                contribution:
+                    type: string
+                country:
+                    type: string
+                exp:
+                    type: string
+                grade:
+                    type: string
+                intro:
+                    type: string
+                member:
+                    type: integer
+                    format: int64
+                militaryExploit:
+                    type: string
+                name:
+                    type: string
+                points:
+                    type: integer
+                    format: int64
+                status:
+                    type: string
+                teamName:
+                    type: string
+                uid:
+                    type: string
+        api.roles.v1.UpdateRolesReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                message:
+                    type: string
+        api.roles.v1.UpdateRolesRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                districtId:
+                    type: string
+tags:
+    - name: Auth
+    - name: District
+    - name: Roles

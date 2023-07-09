@@ -29,8 +29,8 @@ type DistrictHTTPServer interface {
 
 func RegisterDistrictHTTPServer(s *http.Server, srv DistrictHTTPServer) {
 	r := s.Route("/")
-	r.PATCH("/api/v1/roles/district", _District_UpdateDistrict0_HTTP_Handler(srv))
-	r.GET("/api/v1/roles/district", _District_GetDistrict0_HTTP_Handler(srv))
+	r.PATCH("/api/v1/base/district", _District_UpdateDistrict0_HTTP_Handler(srv))
+	r.GET("/api/v1/base/district", _District_GetDistrict0_HTTP_Handler(srv))
 }
 
 func _District_UpdateDistrict0_HTTP_Handler(srv DistrictHTTPServer) func(ctx http.Context) error {
@@ -86,7 +86,7 @@ func NewDistrictHTTPClient(client *http.Client) DistrictHTTPClient {
 
 func (c *DistrictHTTPClientImpl) GetDistrict(ctx context.Context, in *GetDistrictRequest, opts ...http.CallOption) (*GetDistrictReply, error) {
 	var out GetDistrictReply
-	pattern := "/api/v1/roles/district"
+	pattern := "/api/v1/base/district"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationDistrictGetDistrict))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -99,7 +99,7 @@ func (c *DistrictHTTPClientImpl) GetDistrict(ctx context.Context, in *GetDistric
 
 func (c *DistrictHTTPClientImpl) UpdateDistrict(ctx context.Context, in *UpdateDistrictRequest, opts ...http.CallOption) (*UpdateDistrictReply, error) {
 	var out UpdateDistrictReply
-	pattern := "/api/v1/roles/district"
+	pattern := "/api/v1/base/district"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationDistrictUpdateDistrict))
 	opts = append(opts, http.PathTemplate(pattern))

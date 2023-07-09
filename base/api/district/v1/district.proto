@@ -4,7 +4,7 @@ package api.district.v1;
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 
-option go_package = "roles/api/district/v1;v1";
+option go_package = "base/api/district/v1;v1";
 option java_multiple_files = true;
 option java_package = "api.district.v1";
 
@@ -12,14 +12,14 @@ service District {
 	rpc CreateDistrict (CreateDistrictRequest) returns (CreateDistrictReply);
 	rpc UpdateDistrict (UpdateDistrictRequest) returns (UpdateDistrictReply){
 		option (google.api.http) = {
-			patch: "/api/v1/roles/district",
+			patch: "/api/v1/base/district",
 			body: "*",
 		};
 	};
 	rpc DeleteDistrict (DeleteDistrictRequest) returns (DeleteDistrictReply);
 	rpc GetDistrict (GetDistrictRequest) returns (GetDistrictReply){
 		option (google.api.http) = {
-			get: "/api/v1/roles/district",
+			get: "/api/v1/base/district",
 		};
 	};
 }
