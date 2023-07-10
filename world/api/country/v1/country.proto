@@ -1,0 +1,128 @@
+syntax = "proto3";
+
+package api.country.v1;
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "world/api/country/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.country.v1";
+
+service Country {
+	rpc CreateCountry (CreateCountryRequest) returns (CreateCountryReply){
+		option(google.api.http) = {
+			post: "api/v1/world/country";
+			body: "*";
+		};
+	};
+	rpc UpdateCountry (UpdateCountryRequest) returns (UpdateCountryReply){
+		option(google.api.http) = {
+			 patch: "api/v1/world/country";
+			 body: "*";
+		};
+	};
+	rpc DeleteCountry (DeleteCountryRequest) returns (DeleteCountryReply);
+	rpc GetCountry (GetCountryRequest) returns (GetCountryReply){
+		option(google.api.http) = {
+			get: "api/v1/world/country";
+		};
+	};
+	rpc ListCountry (ListCountryRequest) returns (ListCountryReply){
+		option(google.api.http) = {
+			get: "api/v1/world/country/lists";
+		};
+	};
+}
+
+message CreateCountryRequest {
+	string name = 1; // 国名
+	string no = 2; // 国号
+	string capital = 3; // 国都
+	int64 creator = 4; // 创建者
+}
+
+message CreateCountryReply {
+	bool success = 1;
+	string message = 2;
+}
+
+message UpdateCountryRequest {
+	CountryData data = 1;
+}
+
+message UpdateCountryReply {
+	bool success = 1;
+	string message = 2;
+	CountryData data = 3;
+}
+
+message DeleteCountryRequest {}
+message DeleteCountryReply {}
+
+message GetCountryRequest {
+	string id = 1;
+}
+message GetCountryReply {
+	bool success = 1;
+	string message = 2;
+	CountryData data = 3;
+}
+
+message ListCountryRequest {
+	int32 current = 1;
+	int32 page_size = 2;
+}
+
+message ListCountryReply {
+	bool success = 1;
+	string message = 2;
+	ListsData data = 3;
+}
+
+message CountryData {
+	string announcement = 1; // 公告
+	CountryBoost boost = 2; // 加成
+	string capital = 3; // 国都
+	string declaration = 4;  // 宣言
+	string efficiency = 5;  // 效率
+	int32  idle_science_nums = 6 [json_name = "idle_science_nums"]; // 闲置科技点
+	int64  creator = 7; // 国王
+	int32  member_nums = 8 [json_name = "member_nums"]; // 成员数量
+	string name = 9; // 名称
+	string national_power = 10 [json_name = "national_power"]; // 国力
+	string no = 11; // 国家号
+	int32  rank = 12;  // 排名
+	int32  science_nums = 13 [json_name = "science_nums"]; // 科技等级
+	int32  science_point = 14 [json_name = "science_point"]; // 积分点
+	int32  city_nums = 16 [json_name = "city_nums"]; // 城池数量
+	int64  grain = 17; // 粮食
+	int64  copper = 18; // 铜钱
+	int32  id = 19; // 国家ID
+}
+
+message CountryBoost {
+	int32  attack = 1; // 攻击
+	int32  def = 2; // 防御
+	int32  resource = 3; // 资源加成
+}
+
+message ListsData {
+	Pagination page = 1;
+	repeated CountryListsData lists = 2;
+}
+
+message Pagination {
+	int32 total = 1;
+	int32 current= 2;
+	int32 page_size= 3;
+}
+
+message CountryListsData {
+	string announcement = 1; // 公告
+	string name = 2; // 国名
+	string no = 3; // 国号
+	string capital = 4; // 国都
+	int32  city_nums = 5 [json_name = "city_nums"]; // 城池数量
+	int32  member_nums = 6 [json_name = "member_nums"]; // 成员数量
+	int32  id = 7; // 国家ID
+}

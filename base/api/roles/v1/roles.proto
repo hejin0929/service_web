@@ -11,13 +11,13 @@ option java_package = "api.base.v1";
 service Roles {
 	rpc CreateRoles (CreateRolesRequest) returns (CreateRolesReply){
 		option(google.api.http) = {
-			post: "/api/v1/base/base",
+			post: "/api/v1/base/roles",
 			body: "*",
 		};
 	};
 	rpc UpdateRoles (UpdateRolesRequest) returns (UpdateRolesReply){
 		option(google.api.http) = {
-			patch: "/api/v1/base/base",
+			patch: "/api/v1/base/roles",
 			body: "*",
 		};
 	};
@@ -25,7 +25,7 @@ service Roles {
 	rpc DeleteRoles (DeleteRolesRequest) returns (DeleteRolesReply);
 	rpc GetRoles (GetRolesRequest) returns (GetRolesReply){
 		option(google.api.http) = {
-			get: "/api/v1/base/base",
+			get: "/api/v1/base/roles",
 		};
 	};
 	rpc ListRoles (ListRolesRequest) returns (ListRolesReply);
