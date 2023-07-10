@@ -1,4 +1,4 @@
-module country
+module world
 
 go 1.18
 

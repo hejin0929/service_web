@@ -7,11 +7,11 @@
 package main
 
 import (
-	"country/internal/biz"
-	"country/internal/conf"
-	"country/internal/data"
-	"country/internal/server"
-	"country/internal/service"
+	"world/internal/biz"
+	"world/internal/conf"
+	"world/internal/data"
+	"world/internal/server"
+	"world/internal/service"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
