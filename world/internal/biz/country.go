@@ -14,26 +14,26 @@ type Country struct {
 	Announcement    string `json:"announcement"`      // 公告
 	Boost           string `json:"boost"`             // 加成
 	Capital         string `json:"capital"`           // 国都
-	CityNums        int64  `json:"city_nums"`         // 城池数量
+	CityNums        int32  `json:"city_nums"`         // 城池数量
 	Declaration     string `json:"declaration"`       // 宣言
 	Efficiency      string `json:"efficiency"`        // 效率
-	IdleScienceNums int64  `json:"idle_science_nums"` // 闲置科技点
+	IdleScienceNums int32  `json:"idle_science_nums"` // 闲置科技点
 	Creator         string `json:"creator"`           // 国王
-	MemberNums      int64  `json:"member_nums"`       // 成员数量
+	MemberNums      int32  `json:"member_nums"`       // 成员数量
 	Name            string `json:"name"`              // 名称
 	NationalPower   string `json:"national_power"`    // 国力
 	No              string `json:"no"`                // 国家号
-	Rank            int64  `json:"rank"`              // 排名
-	ScienceNums     int64  `json:"science_nums"`      // 科技等级
-	SciencePoint    int64  `json:"science_point"`     // 积分点
+	Rank            int32  `json:"rank"`              // 排名
+	ScienceNums     int32  `json:"science_nums"`      // 科技等级
+	SciencePoint    int32  `json:"science_point"`     // 积分点
 	DistrictId      int    `json:"district_id"`       // id
 }
 
 // Boost 加成
 type Boost struct {
-	Attack   int64 `json:"attack"`   // 攻击
-	Def      int64 `json:"def"`      // 防御
-	Resource int64 `json:"resource"` // 资源
+	Attack   int32 `json:"attack"`   // 攻击
+	Def      int32 `json:"def"`      // 防御
+	Resource int32 `json:"resource"` // 资源
 }
 
 type ListsCountry struct {
@@ -86,7 +86,7 @@ func (uc *CountryUse) CreateCountry(ctx context.Context, req *pb.CreateCountryRe
 		return
 	}
 
-	if err != nil {
+	if err == nil {
 		res.Message = "建国成功"
 		res.Success = true
 	}

@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package api.city.v1;
+
+option go_package = "world/api/city/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.city.v1";
+
+service City {
+	rpc CreateCity (CreateCityRequest) returns (CreateCityReply);
+	rpc UpdateCity (UpdateCityRequest) returns (UpdateCityReply);
+	rpc DeleteCity (DeleteCityRequest) returns (DeleteCityReply);
+	rpc GetCity (GetCityRequest) returns (GetCityReply);
+	rpc ListCity (ListCityRequest) returns (ListCityReply);
+}
+
+message CreateCityRequest {
+
+}
+
+message CreateCityReply {
+
+}
+
+message UpdateCityRequest {}
+message UpdateCityReply {}
+
+message DeleteCityRequest {}
+message DeleteCityReply {}
+
+message GetCityRequest {}
+message GetCityReply {}
+
+message ListCityRequest {}
+message ListCityReply {}
+
+message CityData {
+	string name = 1;
+	string type = 2;
+	int32 x = 3;
+	int32 y = 4;
+	string boost = 5;
+	string country = 6;
+	int32 master_name = 7;
+	string production = 8;
+	string revenue = 9;
+	int32 defend_max = 10;
+	repeated int32 defend_troops = 11;
+	int32 manor_max = 12;
+	repeated int32 manors = 13;
+	string announcement= 14;
+	int32 city_wall = 15;
+	int32 city_way = 16;
+	int32 id = 17;
+}

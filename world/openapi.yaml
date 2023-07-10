@@ -112,7 +112,7 @@ components:
                     format: int32
                 creator:
                     type: integer
-                    format: int64
+                    format: int32
                 member_nums:
                     type: integer
                     format: int32
@@ -136,10 +136,10 @@ components:
                     format: int32
                 grain:
                     type: integer
-                    format: int64
+                    format: int32
                 copper:
                     type: integer
-                    format: int64
+                    format: int32
                 id:
                     type: integer
                     format: int32
@@ -181,7 +181,7 @@ components:
                     type: string
                 creator:
                     type: integer
-                    format: int64
+                    format: int32
         api.country.v1.GetCountryReply:
             type: object
             properties:

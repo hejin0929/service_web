@@ -38,7 +38,7 @@ message CreateCountryRequest {
 	string name = 1; // 国名
 	string no = 2; // 国号
 	string capital = 3; // 国都
-	int64 creator = 4; // 创建者
+	int32 creator = 4; // 创建者
 }
 
 message CreateCountryReply {
@@ -86,7 +86,7 @@ message CountryData {
 	string declaration = 4;  // 宣言
 	string efficiency = 5;  // 效率
 	int32  idle_science_nums = 6 [json_name = "idle_science_nums"]; // 闲置科技点
-	int64  creator = 7; // 国王
+	int32  creator = 7; // 国王
 	int32  member_nums = 8 [json_name = "member_nums"]; // 成员数量
 	string name = 9; // 名称
 	string national_power = 10 [json_name = "national_power"]; // 国力
@@ -95,8 +95,8 @@ message CountryData {
 	int32  science_nums = 13 [json_name = "science_nums"]; // 科技等级
 	int32  science_point = 14 [json_name = "science_point"]; // 积分点
 	int32  city_nums = 16 [json_name = "city_nums"]; // 城池数量
-	int64  grain = 17; // 粮食
-	int64  copper = 18; // 铜钱
+	int32  grain = 17; // 粮食
+	int32  copper = 18; // 铜钱
 	int32  id = 19; // 国家ID
 }
 
