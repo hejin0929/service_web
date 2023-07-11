@@ -35,8 +35,8 @@ message CreateRolesRequest {
 	string district_id = 1 [(validate.rules).string.min_len = 1];
 	string name = 2 [(validate.rules).string = {min_len: 2, max_len: 10}];
 	string sex = 3; // '1' 是男 '2' 是女
-	string avatar = 4;
-	string country = 5;
+	string avatar = 4; // 头像
+	int32 country_id = 5 [json_name = "country_id"]; // 国家id
 }
 
 message CreateRolesReply {

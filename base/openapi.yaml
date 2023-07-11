@@ -193,6 +193,8 @@ components:
                     type: string
                 type:
                     type: string
+                roleId:
+                    type: string
         api.district.v1.GetDistrictReply:
             type: object
             properties:
@@ -234,8 +236,9 @@ components:
                     type: string
                 avatar:
                     type: string
-                country:
-                    type: string
+                country_id:
+                    type: integer
+                    format: int32
         api.roles.v1.GetRolesReply:
             type: object
             properties:
@@ -248,8 +251,6 @@ components:
         api.roles.v1.RolesMessage:
             type: object
             properties:
-                achievements:
-                    type: string
                 actionDesignation:
                     type: string
                 assets:
@@ -260,25 +261,30 @@ components:
                 avatar:
                     type: string
                 cityNums:
-                    type: string
+                    type: integer
+                    format: int64
                 consumption:
                     type: integer
                     format: int64
                 contribution:
-                    type: string
+                    type: integer
+                    format: int64
                 country:
                     type: string
                 exp:
-                    type: string
+                    type: integer
+                    format: int64
                 grade:
-                    type: string
+                    type: integer
+                    format: int64
                 intro:
                     type: string
                 member:
                     type: integer
                     format: int64
                 militaryExploit:
-                    type: string
+                    type: integer
+                    format: int64
                 name:
                     type: string
                 points:
