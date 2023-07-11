@@ -41,15 +41,15 @@ message CityData {
 	int32 y = 4;
 	string boost = 5;
 	string country = 6;
-	int32 master_name = 7;
+	int32 master_name = 7 [json_name = "master_name"];
 	string production = 8;
 	string revenue = 9;
-	int32 defend_max = 10;
-	repeated int32 defend_troops = 11;
-	int32 manor_max = 12;
+	int32 defend_max = 10 [json_name = "defend_max"];
+	repeated int32 defend_troops = 11 [json_name = "defend_troops"];
+	int32 manor_max = 12 [json_name = "manor_max"];
 	repeated int32 manors = 13;
 	string announcement= 14;
-	int32 city_wall = 15;
-	int32 city_way = 16;
+	int32 city_wall = 15 [json_name = "city_wall"];
+	int32 city_way = 16 [json_name = "city_way"];
 	int32 id = 17;
 }
